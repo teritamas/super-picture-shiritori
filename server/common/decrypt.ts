@@ -17,7 +17,7 @@ export function decryptGCPServiceAccount() {
     Buffer.from(iv, "hex")
   );
 
-  const source = fs.readFileSync("./keys/encrypted.txt", { encoding: "utf8" });
+  const source = process.env.ENCRYPTED_KEY!;
   const data = Buffer.from(source, "base64").slice(16);
   const start = decipher.update(data);
   const final = decipher.final();

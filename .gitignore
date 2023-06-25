@@ -22,5 +22,4 @@ logs
 .env.*
 !.env.example
 
-keys/*
-!keys/encrypted.txt
+keys

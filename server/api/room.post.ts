@@ -1,29 +1,21 @@
-import type { IncomingMessage, ServerResponse } from "http";
 import { createError } from "h3";
 import { addRoom } from "../facades/room";
-import { PostRoomRequest } from "../models/rooom";
+import { EntryRoom, PostRoomRequest } from "../models/room";
+import { v4 as uuidv4 } from "uuid";
 
-export default async (req: IncomingMessage, res: ServerResponse) => {
+export default defineEventHandler(async (event) => {
   try {
-    const buffers = [];
+    const body: PostRoomRequest = await readBody(event);
+    console.log("check", body);
 
-    // TODO: 疎通確認のため残す。後で消す
-    // for await (const chunk of req) {
-    //   buffers.push(chunk);
-    // }
-
-    // let body = Buffer.concat(buffers).toString();
-
-    // if (!body) {
-    //   body = "[]";
-    // }
-    const sampleRequest: PostRoomRequest = {
-      roomId: "test",
+    const room: EntryRoom = {
+      ...body,
+      roomId: uuidv4(),
     };
-
-    addRoom(sampleRequest);
-
-    return sampleRequest.roomId;
+    addRoom(room);
+    return {
+      roomId: room.roomId,
+    };
   } catch (e) {
     console.error("[Entry]", e);
     return createError({
@@ -31,4 +23,4 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
       statusMessage: "Failed to entry room",
     });
   }
-};
+});

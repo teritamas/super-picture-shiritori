@@ -5,12 +5,15 @@
       <canvas
         id="myCanvas"
         v-bind:class="{ eraser: canvasMode === 'eraser' }"
-        width="640px"
-        height="800px"
+        width="340px"
+        height="500px"
+        @touchstart="touchstart"
+        @touchmove="touchDraw"
+        @touchend="touchend"
         @mousedown="dragStart"
         @mouseup="dragEnd"
         @mouseout="dragEnd"
-        @mousemove="draw"
+        @mousemove="mouseDraw"
       ></canvas>
     </div>
     <div id="tool-area">
@@ -33,8 +36,15 @@ export default {
       canvas: null,
       context: null,
       isDrag: false,
+      mousePos: null,
+      lastPos: this.mousePos,
     };
   },
+  //  computed: {
+  //    lastPos() {
+  //      return this.mousePos;
+  //    },
+  //  },
   mounted() {
     this.canvas = document.querySelector("#myCanvas");
     this.context = this.canvas.getContext("2d");
@@ -90,14 +100,13 @@ export default {
       this.context.strokeStyle = "#FFFFFF";
     },
     // 描画
-    draw: function (e) {
+    mouseDraw: function (e) {
       var x = e.layerX;
       var y = e.layerY;
 
       if (!this.isDrag) {
         return;
       }
-
       this.context.lineTo(x, y);
       this.context.stroke();
     },
@@ -127,6 +136,48 @@ export default {
       link.href = this.canvas.toDataURL("image/png");
       link.download = "canvas-" + new Date().getTime() + ".png";
       link.click();
+    },
+    touchstart: function (e) {
+      this.noScroll(e);
+
+      this.mousePos = this.getTouchPos(this.canvas, e);
+      this.lastPos = this.mousePos;
+
+      this.context.beginPath();
+      this.context.lineTo(this.mousePos.x, this.mousePos.y);
+      this.context.stroke();
+
+      this.isDrag = true;
+    },
+    touchDraw: function (e) {
+      this.noScroll(e);
+
+      if (!this.isDrag) {
+        return;
+      }
+
+      this.context.moveTo(this.lastPos.x, this.lastPos.y);
+      this.mousePos = this.getTouchPos(this.canvas, e);
+
+      this.context.lineTo(this.mousePos.x, this.mousePos.y);
+      this.context.stroke();
+      this.lastPos = this.mousePos;
+    },
+    touchend: function (e) {
+      this.noScroll(e);
+
+      this.context.closePath();
+      this.isDrag = false;
+    },
+    getTouchPos: function (canvasDom, touchEvent) {
+      var rect = canvasDom.getBoundingClientRect();
+      return {
+        x: touchEvent.touches[0].clientX - rect.left,
+        y: touchEvent.touches[0].clientY - rect.top,
+      };
+    },
+    noScroll: function (e) {
+      e.preventDefault();
     },
   },
 };

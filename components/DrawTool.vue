@@ -40,11 +40,6 @@ export default {
       lastPos: this.mousePos,
     };
   },
-  //  computed: {
-  //    lastPos() {
-  //      return this.mousePos;
-  //    },
-  //  },
   mounted() {
     this.canvas = document.querySelector("#myCanvas");
     this.context = this.canvas.getContext("2d");

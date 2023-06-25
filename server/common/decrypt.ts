@@ -5,7 +5,7 @@ import * as crypto from "crypto";
 import * as fs from "fs";
 
 /**
- * 暗号化キーを複合化して、JSONをexportする
+ * 暗号化キーを複合化する
  */
 export function decryptGCPServiceAccount() {
   const algorithm = "aes-256-cbc";
@@ -22,9 +22,6 @@ export function decryptGCPServiceAccount() {
   const start = decipher.update(data);
   const final = decipher.final();
   const result = Buffer.concat([start, final]).toString("utf8");
-
-  // ここで複合化したJSONをexportする
-  fs.writeFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS!, result);
 
   return result;
 }

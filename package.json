@@ -11,7 +11,7 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@nuxtjs/tailwindcss": "^6.8.0",
-    "@types/node": "^18",
+    "@types/node": "^18.16.18",
     "@types/uuid": "^9.0.2",
     "nuxt": "^3.6.0",
     "typescript": "latest"

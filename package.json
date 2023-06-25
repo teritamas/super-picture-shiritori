@@ -13,5 +13,9 @@
     "@types/node": "^18",
     "nuxt": "^3.6.0",
     "typescript": "latest"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.9.0",
+    "just": "^0.1.8"
   }
 }

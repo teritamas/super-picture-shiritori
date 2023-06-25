@@ -124,6 +124,7 @@ S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715
   overflow: hidden;
   transform: translateZ(0);
   height: 100vh;
+  z-index: 0;
 }
 
 .cloud {
@@ -135,15 +136,15 @@ S20.866,331,46.607,331h668.787C741.133,331,762,307.942,762,279.5S741.133,228,715
 }
 
 .cloud.front {
-  z-index: 9;
+  z-index: 0;
 }
 
 .cloud.distant {
-  z-index: 1;
+  z-index: 0;
 }
 
 .cloud.background {
-  z-index: 1;
+  z-index: 0;
 }
 
 /*Cloud Sizing*/

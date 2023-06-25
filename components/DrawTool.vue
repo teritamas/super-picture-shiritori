@@ -49,6 +49,17 @@ export default {
     this.context.strokeStyle = "#000000";
   },
   methods: {
+    // 登録
+    async addRoom() {
+      const { data, pending, error, refresh } = await useFetch("/api/room", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: "hoge",
+          description: "hoge",
+        }),
+      });
+    },
     // ペンモード（黒）
     penBlack: function () {
       // カーソル変更

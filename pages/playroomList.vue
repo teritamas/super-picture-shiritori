@@ -4,7 +4,11 @@
   <label for="roomPassPhrase">あいことば</label>
   <input class="" type="text" />
   <div>検索結果</div>
-  <a href="/playroom/2">プレイルーム</a>
+  <div v-for="item in rooms" :key="item.roomId">
+    <a :href="`/playroom/${item.roomId}`"
+      >{{ item.roomPassPhrase }} - 作成者: {{ item.createUserId }}
+    </a>
+  </div>
 
   <h2>プレイルームを作る</h2>
   <label for="roomPassPhrase">目標設定</label>
@@ -20,7 +24,7 @@
 
 <script lang="ts">
 import { useFetch } from "nuxt/app";
-import { PostRoomRequest } from "server/models/room";
+import { PostRoomRequest, RoomDomain } from "server/models/room";
 
 export default {
   name: "PlayroomList",
@@ -31,7 +35,11 @@ export default {
         createUserId: "",
         chainCount: 10,
       },
+      rooms: [] as RoomDomain[],
     };
+  },
+  created() {
+    this.getRooms();
   },
   methods: {
     // 登録
@@ -43,6 +51,18 @@ export default {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(request),
+      });
+    },
+    async getRooms() {
+      await useFetch("/api/room", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }).then((res) => {
+        const data = res.data.value as SerializeObject<RoomDomain>[];
+        this.rooms = data.map((room) => {
+          const roomDomain = { ...room } as RoomDomain;
+          return roomDomain;
+        });
       });
     },
   },

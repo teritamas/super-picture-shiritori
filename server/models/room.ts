@@ -11,16 +11,24 @@ export enum RoomStatus {
 export interface RoomDomain {
   roomId: string;
   createUserId: string;
-  roomStatus?: RoomStatus;
   roomPassPhrase: string;
-  createdAt: Date;
-  updatedAt: Date;
+  chainCount: number;
 
   // オプション
   roomName?: string;
+  roomStatus?: RoomStatus;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-// えしりとりルーム
+// えしりとりルームの登録リクエスト
 export interface PostRoomRequest {
+  roomPassPhrase: string;
+  createUserId: string;
+  chainCount: number;
+}
+
+// 保存する時に使う
+export interface EntryRoom extends PostRoomRequest {
   roomId: string;
 }

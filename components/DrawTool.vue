@@ -25,9 +25,6 @@
       <button id="download-button" @click="download">ダウンロード</button>
     </div>
   </div>
-  <div>
-    <button id="back-button" @click="addRoom">送信</button>
-  </div>
 </template>
 
 <script>

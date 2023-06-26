@@ -24,6 +24,9 @@
       <button id="clear-button" @click="clear">クリア</button>
       <button id="download-button" @click="download">ダウンロード</button>
     </div>
+    <div>
+      <button id="add-word-chain-button" @click="addWordChain">登録</button>
+    </div>
   </div>
 </template>
 
@@ -50,15 +53,18 @@ export default {
   },
   methods: {
     // 登録
-    async addRoom() {
-      const { data, pending, error, refresh } = await useFetch("/api/room", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: "hoge",
-          description: "hoge",
-        }),
-      });
+    async addWordChain() {
+      const formData = new FormData();
+      formData.append("request", JSON.stringify({ word: "hoge" }));
+      formData.append("file", this.canvas.toDataURL("image/png"));
+
+      const { data, pending, error, refresh } = await useFetch(
+        "/api/wordchain",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
     },
     // ペンモード（黒）
     penBlack: function () {

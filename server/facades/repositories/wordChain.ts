@@ -20,7 +20,10 @@ export async function addWordChain(wordChain: WordChain) {
  */
 export async function getWordChains(roomId: string) {
   try {
-    const querySnapshot = await firestore.collection("wordChain").get();
+    const querySnapshot = await firestore
+      .collection("wordChain")
+      .where("roomId", "==", roomId)
+      .get();
     const wordChains: WordChain[] = [];
     querySnapshot.forEach((doc) => {
       wordChains.push(doc.data() as WordChain);

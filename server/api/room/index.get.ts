@@ -1,6 +1,6 @@
 import { createError } from "h3";
-import { RoomDomain } from "../models/room";
-import { getRooms } from "../facades/repositories/room";
+import { RoomDomain } from "../../models/room";
+import { getRooms } from "../../facades/repositories/room";
 
 export default defineEventHandler(async (event) => {
   try {

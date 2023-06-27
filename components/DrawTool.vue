@@ -25,6 +25,8 @@
       <button id="download-button" @click="download">ダウンロード</button>
     </div>
     <div>
+      <label for="word">あなたの答え</label>
+      <input class="" type="text" v-model="form.word" />
       <button id="add-word-chain-button" @click="addWordChain">登録</button>
     </div>
   </div>
@@ -35,6 +37,9 @@ export default {
   name: "DrawTool",
   data() {
     return {
+      form: {
+        word: "",
+      },
       canvasMode: "penBlack",
       canvas: null,
       context: null,
@@ -55,9 +60,8 @@ export default {
     // 登録
     async addWordChain() {
       const formData = new FormData();
-      formData.append("request", JSON.stringify({ word: "hoge" }));
+      formData.append("request", JSON.stringify({ ...this.form }));
       formData.append("file", this.canvas.toDataURL("image/png"));
-
       const { data, pending, error, refresh } = await useFetch(
         "/api/wordchain",
         {

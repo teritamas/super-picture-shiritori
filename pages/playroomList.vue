@@ -28,16 +28,22 @@ import { RoomDomain } from "server/models/room";
 // プレイルーム一覧
 const rooms = ref([] as RoomDomain[]);
 const getRooms = async () => {
-  await useFetch("/api/room", {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  }).then((res) => {
-    const data = res.data.value as RoomDomain[];
-    rooms.value = data.map((room) => {
+  try {
+    // レスポンスを取得
+    const res = await useFetch("/api/room", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const responseData = res.data.value as RoomDomain[];
+    rooms.value = responseData.map((room) => {
       const roomDomain = { ...room } as RoomDomain;
       return roomDomain;
     });
-  });
+  } catch (err) {
+    // エラーハンドリング
+    console.error(err);
+  }
 };
 onMounted(async () => {
   await getRooms();
@@ -50,12 +56,12 @@ const form = reactive({
   chainCount: 10,
 });
 const addRoom = async () => {
-  const { data, pending, error, refresh } = await useFetch("/api/room", {
+  const res = await useFetch("/api/room", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...form }),
   });
-  if (data) {
+  if (res.data) {
     await getRooms();
   }
 };

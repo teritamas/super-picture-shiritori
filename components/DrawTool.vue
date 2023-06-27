@@ -36,11 +36,24 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   roomId: {
     type: String,
     required: true,
   },
+});
+
+// 一覧取得
+const wordChains = ref([]);
+const getWordChain = async () => {
+  const res = await useFetch(`/api/wordchain/${props.roomId}`, {
+    method: "GET",
+  });
+
+  wordChains.value = res.data.value;
+};
+onMounted(async () => {
+  await getWordChain();
 });
 </script>
 
@@ -62,7 +75,6 @@ export default {
     };
   },
   mounted() {
-    this.getWordChain();
     this.canvas = document.querySelector("#myCanvas");
     this.context = this.canvas.getContext("2d");
     this.context.lineCap = "round";
@@ -83,15 +95,7 @@ export default {
           body: formData,
         }
       );
-    },
-    async getWordChain() {
-      const { data, pending, error, refresh } = await useFetch(
-        `/api/wordchain/${this.roomId}`,
-        {
-          method: "GET",
-        }
-      );
-      this.wordChains = data;
+      this.getWordChain();
     },
     // ペンモード（黒）
     penBlack: function () {

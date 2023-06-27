@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import { PostWordChainRequest, WordChain } from "../models/wordchain";
 import { addWordChain } from "../facades/repositories/addWordChain";
 import { uploadImage } from "../facades/storage/generatedImage";
+import * as fs from "fs";
+import { Buffer } from "buffer";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -46,9 +48,9 @@ export default defineEventHandler(async (event) => {
       wordChainId: uuidv4(),
     };
 
+    // GCPに保存する処理
     await addWordChain(wordChain);
-
-    await uploadImage(file, wordChain.wordChainId);
+    await convertAndUploadImage(file, wordChain);
 
     return {
       wordChainId: wordChain.wordChainId,
@@ -61,3 +63,14 @@ export default defineEventHandler(async (event) => {
     });
   }
 });
+
+/**
+ * file画像を変換してstorageにアップロードする
+ */
+async function convertAndUploadImage(file: Buffer, wordChain: WordChain) {
+  const base64Data = file.toString().split(",")[1];
+  const decodedData = Buffer.from(base64Data, "base64");
+
+  fs.writeFileSync("temp.png", decodedData);
+  await uploadImage(file, wordChain.wordChainId);
+}

@@ -22,49 +22,41 @@
   </div>
 </template>
 
-<script lang="ts">
-import { useFetch } from "nuxt/app";
-import { PostRoomRequest, RoomDomain } from "server/models/room";
+<script setup lang="ts">
+import { RoomDomain } from "server/models/room";
 
-export default {
-  name: "PlayroomList",
-  data() {
-    return {
-      form: {
-        roomPassPhrase: "",
-        createUserId: "",
-        chainCount: 10,
-      },
-      rooms: [] as RoomDomain[],
-    };
-  },
-  created() {
-    this.getRooms();
-  },
-  methods: {
-    // 登録
-    async addRoom() {
-      const request: PostRoomRequest = {
-        ...this.form,
-      };
-      await useFetch("/api/room", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(request),
-      });
-    },
-    async getRooms() {
-      await useFetch("/api/room", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }).then((res) => {
-        const data = res.data.value as SerializeObject<RoomDomain>[];
-        this.rooms = data.map((room) => {
-          const roomDomain = { ...room } as RoomDomain;
-          return roomDomain;
-        });
-      });
-    },
-  },
+// プレイルーム一覧
+const rooms = ref([] as RoomDomain[]);
+const getRooms = async () => {
+  await useFetch("/api/room", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  }).then((res) => {
+    const data = res.data.value as RoomDomain[];
+    rooms.value = data.map((room) => {
+      const roomDomain = { ...room } as RoomDomain;
+      return roomDomain;
+    });
+  });
+};
+onMounted(async () => {
+  await getRooms();
+});
+
+// プレイルームの新規登録
+const form = reactive({
+  roomPassPhrase: "",
+  createUserId: "",
+  chainCount: 10,
+});
+const addRoom = async () => {
+  const { data, pending, error, refresh } = await useFetch("/api/room", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...form }),
+  });
+  if (data) {
+    await getRooms();
+  }
 };
 </script>

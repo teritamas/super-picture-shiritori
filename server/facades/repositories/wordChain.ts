@@ -14,3 +14,19 @@ export async function addWordChain(wordChain: WordChain) {
     console.error("[addWordChain]", e);
   }
 }
+
+/**
+ * Firestoreの/wordChainの一覧を取得する
+ */
+export async function getWordChains(roomId: string) {
+  try {
+    const querySnapshot = await firestore.collection("wordChain").get();
+    const wordChains: WordChain[] = [];
+    querySnapshot.forEach((doc) => {
+      wordChains.push(doc.data() as WordChain);
+    });
+    return wordChains;
+  } catch (e) {
+    console.error("[getWordChains]", e);
+  }
+}

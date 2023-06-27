@@ -32,6 +32,15 @@
   </div>
 </template>
 
+<script setup>
+defineProps({
+  roomId: {
+    type: String,
+    required: true,
+  },
+});
+</script>
+
 <script>
 export default {
   name: "DrawTool",
@@ -63,7 +72,7 @@ export default {
       formData.append("request", JSON.stringify({ ...this.form }));
       formData.append("file", this.canvas.toDataURL("image/png"));
       const { data, pending, error, refresh } = await useFetch(
-        "/api/wordchain",
+        `/api/wordchain/${this.roomId}`,
         {
           method: "POST",
           body: formData,

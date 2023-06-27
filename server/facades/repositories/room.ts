@@ -1,10 +1,10 @@
-import { EntryRoom, PostRoomRequest, RoomDomain } from "../models/room";
-import { firestore } from "./firestore";
+import * as room from "../../models/room";
+import { firestore } from "../firebase";
 
 /**
  * FireStoreの/roomにルームを追加する(firestore-adminを利用)
  */
-export function addRoom(room: EntryRoom) {
+export function addRoom(room: room.EntryRoom) {
   try {
     const querySnapshot = firestore
       .collection("room")
@@ -21,9 +21,9 @@ export function addRoom(room: EntryRoom) {
 export async function getRooms() {
   try {
     const querySnapshot = await firestore.collection("room").get();
-    const rooms: RoomDomain[] = [];
+    const rooms: room.RoomDomain[] = [];
     querySnapshot.forEach((doc) => {
-      rooms.push(doc.data() as RoomDomain);
+      rooms.push(doc.data() as room.RoomDomain);
     });
     return rooms === undefined ? [] : rooms;
   } catch (e) {

@@ -1,7 +1,7 @@
 import { createError } from "h3";
-import { addRoom } from "../facades/room";
 import { EntryRoom, PostRoomRequest } from "../models/room";
 import { v4 as uuidv4 } from "uuid";
+import { addRoom } from "../facades/repositories/room";
 
 export default defineEventHandler(async (event) => {
   try {

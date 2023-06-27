@@ -24,6 +24,11 @@
       <button id="clear-button" @click="clear">クリア</button>
       <button id="download-button" @click="download">ダウンロード</button>
     </div>
+    <div>
+      <label for="word">あなたの答え</label>
+      <input class="" type="text" v-model="form.word" />
+      <button id="add-word-chain-button" @click="addWordChain">登録</button>
+    </div>
   </div>
 </template>
 
@@ -32,6 +37,9 @@ export default {
   name: "DrawTool",
   data() {
     return {
+      form: {
+        word: "",
+      },
       canvasMode: "penBlack",
       canvas: null,
       context: null,
@@ -50,15 +58,17 @@ export default {
   },
   methods: {
     // 登録
-    async addRoom() {
-      const { data, pending, error, refresh } = await useFetch("/api/room", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: "hoge",
-          description: "hoge",
-        }),
-      });
+    async addWordChain() {
+      const formData = new FormData();
+      formData.append("request", JSON.stringify({ ...this.form }));
+      formData.append("file", this.canvas.toDataURL("image/png"));
+      const { data, pending, error, refresh } = await useFetch(
+        "/api/wordchain",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
     },
     // ペンモード（黒）
     penBlack: function () {

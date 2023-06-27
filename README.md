@@ -64,19 +64,23 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 
 ## GCP の ServiceAccountKey の暗号化
 
-GCP からダウンロードした秘密鍵を下記のコマンドで暗号化する。
+GCP からダウンロードした認証情報を下記のコマンドで暗号化する。
 
 ```bash
 openssl enc -aes-256-cbc -a -in ./keys/service-account-key.json -out encrypted.txt -k passphrase -p
 
 salt=xxxxxxxxxxxxxxxx
 key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-iv =xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+iv=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-出力された key, iv を それぞれ .env に設定する。
+その後、出力された key と iv、 `encrypted.txt`の内容を、それぞれ .env に設定する。
 
 ```bash
 DECRYPT_KEY={出力されたkey}
 DECRYPT_IV={出力されたiv}
+ENCRYPTED_KEY="XXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXX
+~省略~
+xXXXXXXXXX=="
 ```

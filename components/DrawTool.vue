@@ -1,6 +1,9 @@
 <template>
   <div>
     <h2>DrowTool</h2>
+    <div v-for="wordChain in wordChains" :key="wordChain.wordChainId">
+      <p>{{ wordChain }}</p>
+    </div>
     <div id="canvas-area">
       <canvas
         id="myCanvas"
@@ -55,9 +58,11 @@ export default {
       isDrag: false,
       mousePos: null,
       lastPos: this.mousePos,
+      wordChains: [],
     };
   },
   mounted() {
+    this.getWordChain();
     this.canvas = document.querySelector("#myCanvas");
     this.context = this.canvas.getContext("2d");
     this.context.lineCap = "round";
@@ -78,6 +83,15 @@ export default {
           body: formData,
         }
       );
+    },
+    async getWordChain() {
+      const { data, pending, error, refresh } = await useFetch(
+        `/api/wordchain/${this.roomId}`,
+        {
+          method: "GET",
+        }
+      );
+      this.wordChains = data;
     },
     // ペンモード（黒）
     penBlack: function () {

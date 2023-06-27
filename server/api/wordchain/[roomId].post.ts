@@ -1,9 +1,8 @@
-import { createError, MultiPartData } from "h3";
+import { createError } from "h3";
 import { v4 as uuidv4 } from "uuid";
-import { PostWordChainRequest, WordChain } from "../models/wordchain";
-import { addWordChain } from "../facades/repositories/addWordChain";
-import { uploadImage } from "../facades/storage/generatedImage";
-import * as fs from "fs";
+import { PostWordChainRequest, WordChain } from "../../models/wordchain";
+import { addWordChain } from "../../facades/repositories/wordChain";
+import { uploadImage } from "../../facades/storage/generatedImage";
 import { Buffer } from "buffer";
 
 export default defineEventHandler(async (event) => {
@@ -32,9 +31,9 @@ export default defineEventHandler(async (event) => {
         file = d.data;
       }
     }
-    const roomId: string = event.path;
+    const roomId: string | undefined = event.context.params?.roomId;
 
-    if (!(requestBody && file)) {
+    if (!(requestBody && file && roomId)) {
       return createError({
         statusCode: 400,
         statusMessage: "Failed to read body",
@@ -71,6 +70,6 @@ async function convertAndUploadImage(file: Buffer, wordChain: WordChain) {
   const base64Data = file.toString().split(",")[1];
   const decodedData = Buffer.from(base64Data, "base64");
 
-  fs.writeFileSync("temp.png", decodedData);
-  await uploadImage(file, wordChain.wordChainId);
+  // fs.writeFileSync("temp.png", decodedData); // デバッグ様にローカルに保存
+  await uploadImage(decodedData, wordChain.wordChainId);
 }

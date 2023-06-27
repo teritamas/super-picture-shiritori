@@ -1,6 +1,9 @@
 <template>
   <div>
     <h2>DrowTool</h2>
+    <div v-for="wordChain in wordChains" :key="wordChain.wordChainId">
+      <p>{{ wordChain }}</p>
+    </div>
     <div id="canvas-area">
       <canvas
         id="myCanvas"
@@ -32,6 +35,28 @@
   </div>
 </template>
 
+<script setup>
+const props = defineProps({
+  roomId: {
+    type: String,
+    required: true,
+  },
+});
+
+// 一覧取得
+const wordChains = ref([]);
+const getWordChain = async () => {
+  const res = await useFetch(`/api/wordchain/${props.roomId}`, {
+    method: "GET",
+  });
+
+  wordChains.value = res.data.value;
+};
+onMounted(async () => {
+  await getWordChain();
+});
+</script>
+
 <script>
 export default {
   name: "DrawTool",
@@ -46,6 +71,7 @@ export default {
       isDrag: false,
       mousePos: null,
       lastPos: this.mousePos,
+      wordChains: [],
     };
   },
   mounted() {
@@ -63,12 +89,13 @@ export default {
       formData.append("request", JSON.stringify({ ...this.form }));
       formData.append("file", this.canvas.toDataURL("image/png"));
       const { data, pending, error, refresh } = await useFetch(
-        "/api/wordchain",
+        `/api/wordchain/${this.roomId}`,
         {
           method: "POST",
           body: formData,
         }
       );
+      this.getWordChain();
     },
     // ペンモード（黒）
     penBlack: function () {

@@ -30,12 +30,13 @@ const rooms = ref([] as RoomDomain[]);
 const getRooms = async () => {
   try {
     // レスポンスを取得
-    const res = await useFetch("/api/room", {
+    const res = await $fetch("/api/room", {
+      // useFetchだとnullが発生する時がある
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
 
-    const responseData = res.data.value as RoomDomain[];
+    const responseData = res as RoomDomain[];
     rooms.value = responseData.map((room) => {
       const roomDomain = { ...room } as RoomDomain;
       return roomDomain;

@@ -44,13 +44,13 @@ const props = defineProps({
 });
 
 // 一覧取得
-const wordChains = ref([]);
+const wordChains = ref();
 const getWordChain = async () => {
-  const res = await useFetch(`/api/wordchain/${props.roomId}`, {
+  const res = await $fetch(`/api/wordchain/${props.roomId}`, {
     method: "GET",
   });
 
-  wordChains.value = res.data.value;
+  wordChains.value = res;
 };
 onMounted(async () => {
   await getWordChain();

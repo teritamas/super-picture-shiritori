@@ -24,7 +24,7 @@ export async function getWordChains(roomId: string) {
     const querySnapshot = await firestore
       .collection("wordChain")
       .where("roomId", "==", roomId)
-      // .orderBy("createdAt", "asc")
+      .orderBy("createdAt", "asc")
       .get();
     const wordChains: WordChain[] = [];
     querySnapshot.forEach((doc) => {

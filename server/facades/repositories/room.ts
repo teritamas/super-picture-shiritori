@@ -34,7 +34,10 @@ export async function updateRoomUpdatedAt(roomId: string) {
  */
 export async function getRooms() {
   try {
-    const querySnapshot = await firestore.collection("room").get();
+    const querySnapshot = await firestore
+      .collection("room")
+      .orderBy("createdAt", "asc")
+      .get();
     const rooms: room.RoomDomain[] = [];
     querySnapshot.forEach((doc) => {
       rooms.push(doc.data() as room.RoomDomain);

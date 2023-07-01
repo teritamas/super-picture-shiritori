@@ -3,6 +3,7 @@
     <h2>DrowTool</h2>
     <div v-for="wordChain in wordChains" :key="wordChain.wordChainId">
       <p>{{ wordChain }}</p>
+      <img :src="getWordChainImage(wordChain.wordChainId)" alt="" />
     </div>
     <div id="canvas-area">
       <canvas
@@ -55,6 +56,12 @@ const getWordChain = async () => {
 onMounted(async () => {
   await getWordChain();
 });
+
+// 画像取得
+const runtimeConfig = useRuntimeConfig();
+const getWordChainImage = (wordChainId) => {
+  return `${runtimeConfig.public.baseUrl}/api/wordchain/image/${wordChainId}`;
+};
 </script>
 
 <script>

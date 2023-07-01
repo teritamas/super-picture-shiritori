@@ -2,7 +2,7 @@ import { getWordChains } from "../../facades/repositories/wordChain";
 import { WordChain } from "../../models/wordchain";
 
 /**
- * 一覧取得
+ * 画像取得
  */
 export default defineEventHandler(async (event) => {
   try {

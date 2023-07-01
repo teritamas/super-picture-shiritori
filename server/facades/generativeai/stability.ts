@@ -20,7 +20,6 @@ interface GenerationResponse {
  * 入力画像をDreamStudioAPIにリクエストしAIによる変換を行う。
  */
 export async function editImage(prompt: string, image: Buffer) {
-  fs.writeFileSync(`base.png`, image);
   const formData = new FormData();
   formData.append("init_image", image);
   formData.append("init_image_mode", "IMAGE_STRENGTH");
@@ -57,11 +56,18 @@ export async function editImage(prompt: string, image: Buffer) {
 
   const responseJSON = (await response.json()) as GenerationResponse;
 
+  // saveImage(responseJSON);
+  return Buffer.from(responseJSON.artifacts[0].base64, "base64");
+}
+
+/**
+ * 生成された画像をローカルに保存する
+ */
+function saveImage(responseJSON: GenerationResponse) {
   responseJSON.artifacts.forEach((image, index) => {
     fs.writeFileSync(
       `v1_img2img_${index}.png`,
       Buffer.from(image.base64, "base64")
     );
   });
-  return Buffer.from(responseJSON.artifacts[0].base64, "base64");
 }

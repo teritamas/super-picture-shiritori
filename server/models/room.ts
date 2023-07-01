@@ -1,5 +1,3 @@
-import * as e from "express";
-
 export enum RoomStatus {
   Waiting = "waiting",
   Playing = "playing",
@@ -17,6 +15,7 @@ export interface RoomDomain {
   // オプション
   roomName?: string;
   roomStatus?: RoomStatus;
+  lastPhrase?: string;
   createdAt: Date;
   updatedAt?: Date;
 }
@@ -27,9 +26,13 @@ export interface PostRoomRequest {
   createUserId: string;
   chainCount: number;
 }
+export interface PostRoomResponse {
+  roomId: string;
+}
 
 // 保存する時に使う
 export interface EntryRoom extends PostRoomRequest {
   roomId: string;
   createdAt: Date;
+  roomStatus?: RoomStatus;
 }

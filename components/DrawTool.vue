@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>DrowTool</h2>
     <div id="canvas-area">
       <canvas
         id="myCanvas"
@@ -27,179 +26,177 @@
     <div>
       <label for="word">あなたの答え</label>
       <input class="" type="text" v-model="form.word" />
-      <button id="add-word-chain-button" @click="addWordChain">登録</button>
+      <button
+        id="add-word-chain-button"
+        :disabled="disabledSubmitButton"
+        @click="addWordChain"
+      >
+        登録
+      </button>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "DrawTool",
-  data() {
-    return {
-      form: {
-        word: "",
-      },
-      canvasMode: "penBlack",
-      canvas: null,
-      context: null,
-      isDrag: false,
-      mousePos: null,
-      lastPos: this.mousePos,
-      wordChains: [],
-    };
-  },
-  mounted() {
-    this.canvas = document.querySelector("#myCanvas");
-    this.context = this.canvas.getContext("2d");
-    this.context.fillStyle = "#FFFFFF";
-    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    this.context.lineCap = "round";
-    this.context.lineJoin = "round";
-    this.context.lineWidth = 30;
-    this.context.strokeStyle = "#000000";
-  },
-  methods: {
-    // 登録
-    async addWordChain() {
-      const formData = new FormData();
-      formData.append("request", JSON.stringify({ ...this.form }));
-      formData.append("file", this.canvas.toDataURL("image/png"));
-      const { data, pending, error, refresh } = await useFetch(
-        `/api/wordchain/${this.roomId}`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      this.getWordChain();
-    },
-    // ペンモード（黒）
-    penBlack: function () {
-      // カーソル変更
-      this.canvasMode = "penBlack";
+<script setup lang="ts">
+// キャンバスの設定
+const canvasMode = ref("penBlack");
+const canvas = ref();
+const context = ref();
+const isDrag = ref(false);
+const mousePos = ref();
+const lastPos = ref(mousePos);
+onMounted(() => {
+  canvas.value = document.querySelector("#myCanvas");
+  context.value = canvas.value.getContext("2d");
+  context.value.fillStyle = "#FFFFFF";
+  context.value.fillRect(0, 0, canvas.value.width, canvas.value.height);
+  context.value.lineCap = "round";
+  context.value.lineJoin = "round";
+  context.value.lineWidth = 5;
+  context.value.strokeStyle = "#000000";
+});
+const penBlack = () => {
+  // カーソル変更
+  canvasMode.value = "penBlack";
 
-      // 描画設定
-      this.context.lineCap = "round";
-      this.context.lineJoin = "round";
-      this.context.lineWidth = 5;
-      this.context.strokeStyle = "#000000";
-    },
-    // ペンモード（赤）
-    penRed: function () {
-      // カーソル変更
-      this.canvasMode = "penRed";
+  // 描画設定
+  context.value.lineCap = "round";
+  context.value.lineJoin = "round";
+  context.value.lineWidth = 5;
+  context.value.strokeStyle = "#000000";
+};
+const penRed = () => {
+  // カーソル変更
+  canvasMode.value = "penRed";
 
-      // 描画設定
-      this.context.lineCap = "round";
-      this.context.lineJoin = "round";
-      this.context.lineWidth = 5;
-      this.context.strokeStyle = "#FF0000";
-    },
-    // ペンモード（青）
-    penBlue: function () {
-      // カーソル変更
-      this.canvasMode = "penBlue";
+  // 描画設定
+  context.value.lineCap = "round";
+  context.value.lineJoin = "round";
+  context.value.lineWidth = 5;
+  context.value.strokeStyle = "#FF0000";
+};
+const penBlue = () => {
+  // カーソル変更
+  canvasMode.value = "penBlue";
 
-      // 描画設定
-      this.context.lineCap = "round";
-      this.context.lineJoin = "round";
-      this.context.lineWidth = 5;
-      this.context.strokeStyle = "#0000FF";
-    },
+  // 描画設定
+  context.value.lineCap = "round";
+  context.value.lineJoin = "round";
+  context.value.lineWidth = 5;
+  context.value.strokeStyle = "#0000FF";
+};
+const eraser = () => {
+  // カーソル変更
+  canvasMode.value = "eraser";
 
-    // 消しゴムモード
-    eraser: function () {
-      // カーソル変更
-      this.canvasMode = "eraser";
+  // 描画設定
+  context.value.lineCap = "square";
+  context.value.lineJoin = "square";
+  context.value.lineWidth = 30;
+  context.value.strokeStyle = "#FFFFFF";
+};
+const mouseDraw = (e: any) => {
+  const x = e.layerX;
+  const y = e.layerY;
 
-      // 描画設定
-      this.context.lineCap = "square";
-      this.context.lineJoin = "square";
-      this.context.lineWidth = 30;
-      this.context.strokeStyle = "#FFFFFF";
-    },
-    // 描画
-    mouseDraw: function (e) {
-      var x = e.layerX;
-      var y = e.layerY;
+  if (!isDrag.value) {
+    return;
+  }
+  context.value.lineTo(x, y);
+  context.value.stroke();
+};
+const dragStart = (e: any) => {
+  const x = e.layerX;
+  const y = e.layerY;
 
-      if (!this.isDrag) {
-        return;
-      }
-      this.context.lineTo(x, y);
-      this.context.stroke();
-    },
-    // 描画開始（mousedown）
-    dragStart: function (e) {
-      var x = e.layerX;
-      var y = e.layerY;
+  context.value.beginPath();
+  context.value.lineTo(x, y);
+  context.value.stroke();
 
-      this.context.beginPath();
-      this.context.lineTo(x, y);
-      this.context.stroke();
+  isDrag.value = true;
+};
+const dragEnd = () => {
+  context.value.closePath();
+  isDrag.value = false;
+};
+// クリア
+const clear = () => {
+  context.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
+};
+// 画像ダウンロード
+const download = () => {
+  const link = document.createElement("a");
+  link.href = canvas.value.toDataURL("image/png");
+  link.download = "canvas-" + new Date().getTime() + ".png";
+  link.click();
+};
+// タッチイベント
+const touchstart = (e: any) => {
+  noScroll(e);
 
-      this.isDrag = true;
-    },
-    // 描画終了（mouseup, mouseout）
-    dragEnd: function () {
-      this.context.closePath();
-      this.isDrag = false;
-    },
-    // クリア
-    clear: function () {
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    },
-    // 画像ダウンロード
-    download: function () {
-      let link = document.createElement("a");
-      link.href = this.canvas.toDataURL("image/png");
-      link.download = "canvas-" + new Date().getTime() + ".png";
-      link.click();
-    },
-    touchstart: function (e) {
-      this.noScroll(e);
+  mousePos.value = getTouchPos(canvas.value, e);
+  lastPos.value = mousePos.value;
 
-      this.mousePos = this.getTouchPos(this.canvas, e);
-      this.lastPos = this.mousePos;
+  context.value.beginPath();
+  context.value.lineTo(mousePos.value.x, mousePos.value.y);
+  context.value.stroke();
 
-      this.context.beginPath();
-      this.context.lineTo(this.mousePos.x, this.mousePos.y);
-      this.context.stroke();
+  isDrag.value = true;
+};
+const touchDraw = (e: any) => {
+  noScroll(e);
 
-      this.isDrag = true;
-    },
-    touchDraw: function (e) {
-      this.noScroll(e);
+  if (!isDrag.value) {
+    return;
+  }
 
-      if (!this.isDrag) {
-        return;
-      }
+  context.value.moveTo(lastPos.value.x, lastPos.value.y);
+  mousePos.value = getTouchPos(canvas.value, e);
 
-      this.context.moveTo(this.lastPos.x, this.lastPos.y);
-      this.mousePos = this.getTouchPos(this.canvas, e);
+  context.value.lineTo(mousePos.value.x, mousePos.value.y);
+  context.value.stroke();
+  lastPos.value = mousePos.value;
+};
+const touchend = (e: any) => {
+  noScroll(e);
 
-      this.context.lineTo(this.mousePos.x, this.mousePos.y);
-      this.context.stroke();
-      this.lastPos = this.mousePos;
-    },
-    touchend: function (e) {
-      this.noScroll(e);
+  context.value.closePath();
+  isDrag.value = false;
+};
+const getTouchPos = function (canvasDom: any, touchEvent: any) {
+  const rect = canvasDom.getBoundingClientRect();
+  return {
+    x: touchEvent.touches[0].clientX - rect.left,
+    y: touchEvent.touches[0].clientY - rect.top,
+  };
+};
+const noScroll = (e: any) => {
+  e.preventDefault();
+};
 
-      this.context.closePath();
-      this.isDrag = false;
-    },
-    getTouchPos: function (canvasDom, touchEvent) {
-      var rect = canvasDom.getBoundingClientRect();
-      return {
-        x: touchEvent.touches[0].clientX - rect.left,
-        y: touchEvent.touches[0].clientY - rect.top,
-      };
-    },
-    noScroll: function (e) {
-      e.preventDefault();
-    },
-  },
+import { PostWordChainRequest } from "server/models/wordchain";
+
+// 登録
+const form = ref({
+  word: "",
+} as PostWordChainRequest);
+// ボタンのバリデーション
+const disabledSubmitButton = computed(() => {
+  return form.value.word === "" || canvas.value.toDataURL() === "";
+});
+
+const emits = defineEmits(["addWordChain"]);
+const addWordChain = async () => {
+  if (disabledSubmitButton.value) {
+    console.warn("ボタンが無効です");
+    return;
+  }
+  await emits("addWordChain", form.value, canvas.value.toDataURL("image/png"));
+  clearFormAndCanvas(); // 画像と入力をクリア
+};
+const clearFormAndCanvas = () => {
+  form.value.word = "";
+  clear();
 };
 </script>
 

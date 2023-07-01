@@ -3,44 +3,33 @@
     <li
       v-for="(wordChain, index) in wordChains"
       :key="wordChain.wordChainId"
-      class="mb-10 pl-4"
+      class="mb-10 ml-4"
     >
       <div
         class="absolute w-3 h-3 bg-gray-800 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"
       ></div>
       <img
         :src="getWordChainImage(wordChain.wordChainId)"
-        :alt="index"
+        :alt="wordChain.roomId + index"
         class="w-full relative article"
       />
     </li>
   </ol>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { WordChain } from "server/models/wordchain";
+
 const props = defineProps({
-  roomId: {
-    type: String,
+  wordChains: {
+    type: Array as PropType<WordChain[]>,
     required: true,
   },
 });
 
-// 一覧取得
-const wordChains = ref();
-const getWordChain = async () => {
-  const res = await $fetch(`/api/wordchain/${props.roomId}`, {
-    method: "GET",
-  });
-
-  wordChains.value = res;
-};
-onMounted(async () => {
-  await getWordChain();
-});
-
 // 画像取得
 const runtimeConfig = useRuntimeConfig();
-const getWordChainImage = (wordChainId) => {
+const getWordChainImage = (wordChainId: string) => {
   return `${runtimeConfig.public.baseUrl}/api/wordchain/image/${wordChainId}`;
 };
 </script>

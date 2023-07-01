@@ -15,3 +15,16 @@ export const uploadImage = async (image: Buffer, filename: string) => {
     console.error("[uploadImage]", e);
   }
 };
+
+/**
+ * storageから画像をダウンロードする
+ */
+export const downloadImage = async (wordChainId: string) => {
+  const file = bucket.file(GENERATED_IMAGE_DIR + "/" + wordChainId + ".png");
+  try {
+    const [data] = await file.download();
+    return data;
+  } catch (e) {
+    console.error("[downloadImage]", e);
+  }
+};

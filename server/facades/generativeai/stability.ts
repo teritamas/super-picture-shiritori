@@ -16,9 +16,9 @@ interface GenerationResponse {
   }>;
 }
 
-// NOTE: This example is using a NodeJS FormData library.
-// Browsers should use their native FormData class.
-// React Native apps should also use their native FormData class.
+/**
+ * 入力画像をDreamStudioAPIにリクエストしAIによる変換を行う。
+ */
 export async function editImage(prompt: string, image: Buffer) {
   fs.writeFileSync(`base.png`, image);
   const formData = new FormData();
@@ -50,7 +50,9 @@ export async function editImage(prompt: string, image: Buffer) {
   );
 
   if (!response.ok) {
-    throw new Error(`Non-200 response: ${await response.text()}`);
+    console.error("Failed to generate image. Return Original Images.");
+    console.error(await response.text());
+    return image;
   }
 
   const responseJSON = (await response.json()) as GenerationResponse;

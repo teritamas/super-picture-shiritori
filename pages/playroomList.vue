@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { RoomDomain } from "server/models/room";
+import { PostRoomResponse, RoomDomain } from "server/models/room";
 
 // プレイルーム一覧
 const rooms = ref([] as RoomDomain[]);
@@ -81,8 +81,11 @@ const addRoom = async () => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...form }),
   });
-  if (res.data) {
+  const response = res.data.value as PostRoomResponse;
+  if (response.roomId) {
     await getRooms();
+    // プレイルーム画面に遷移
+    navigateTo(`/playroom/${response.roomId}`);
   }
 };
 </script>

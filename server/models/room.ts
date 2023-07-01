@@ -26,6 +26,9 @@ export interface PostRoomRequest {
   createUserId: string;
   chainCount: number;
 }
+export interface PostRoomResponse {
+  roomId: string;
+}
 
 // 保存する時に使う
 export interface EntryRoom extends PostRoomRequest {

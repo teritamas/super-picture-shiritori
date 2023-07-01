@@ -2,15 +2,36 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <h2>Draw Tool</h2>
     <PictureList :wordChains="wordChains" />
-    <DrawTool @addWordChain="addWordChain" />
+    <DrawTool v-show="showDrawingArea" @addWordChain="addWordChain" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { PostWordChainRequest, WordChain } from "server/models/wordchain";
+import { RoomDomain, RoomStatus } from "../../server/models/room";
+import { PostWordChainRequest, WordChain } from "../../server/models/wordchain";
 
 const route = useRoute();
 const roomId = route.params.roomId as string;
+
+// しりとり部屋のステータス取得
+const room = ref({} as RoomDomain);
+const getRoom = async () => {
+  const res = (await $fetch(`/api/room/${roomId}`, {
+    method: "GET",
+  })) as RoomDomain;
+
+  room.value = res;
+};
+onMounted(async () => {
+  await getRoom();
+});
+const showDrawingArea = computed(() => {
+  // しりとり部屋のステータスが「プレイ中」「待機中」の場合=true
+  return (
+    room.value.roomStatus === RoomStatus.Playing ||
+    room.value.roomStatus === RoomStatus.Waiting
+  );
+});
 
 // 一覧取得
 const wordChains = ref([] as WordChain[]);
@@ -42,6 +63,7 @@ const addWordChain = async (
   );
   if (data) {
     getWordChain();
+    getRoom();
   }
 };
 </script>

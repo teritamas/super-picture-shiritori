@@ -16,16 +16,32 @@ export function addRoom(room: room.EntryRoom) {
 }
 
 /**
- * Firestoreの/roomからルームの最終更新時間を(firestore-adminを利用)
+ * ユーザがしりとりの単語を入力した後のルームの更新処理(firestore-adminを利用)
  */
-export async function updateRoomUpdatedAt(roomId: string) {
+export async function updateRoomAfterInput(
+  roomId: string,
+  nextRoomStatus: room.RoomStatus
+) {
   try {
     const querySnapshot = firestore
       .collection("room")
       .doc(roomId)
-      .update({ updatedAt: new Date() });
+      .update({ roomStatus: nextRoomStatus, updatedAt: new Date() });
   } catch (e) {
     console.error("[updateRoom]", e);
+  }
+}
+
+/**
+ * ルームの状態を取得する(firestore-adminを利用)
+ */
+export async function getRoom(roomId: string) {
+  try {
+    const querySnapshot = await firestore.collection("room").doc(roomId).get();
+    const room: room.RoomDomain = querySnapshot.data() as room.RoomDomain;
+    return room;
+  } catch (e) {
+    console.error("[getRoom]", e);
   }
 }
 

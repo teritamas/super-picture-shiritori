@@ -1,5 +1,3 @@
-import * as e from "express";
-
 export enum RoomStatus {
   Waiting = "waiting",
   Playing = "playing",
@@ -32,4 +30,5 @@ export interface PostRoomRequest {
 export interface EntryRoom extends PostRoomRequest {
   roomId: string;
   createdAt: Date;
+  roomStatus?: RoomStatus;
 }

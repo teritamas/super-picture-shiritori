@@ -20,13 +20,18 @@ export function addRoom(room: room.EntryRoom) {
  */
 export async function updateRoomAfterInput(
   roomId: string,
+  lastPhrase: string,
   nextRoomStatus: room.RoomStatus
 ) {
   try {
     const querySnapshot = firestore
       .collection("room")
       .doc(roomId)
-      .update({ roomStatus: nextRoomStatus, updatedAt: new Date() });
+      .update({
+        roomStatus: nextRoomStatus,
+        lastPhrase: lastPhrase,
+        updatedAt: new Date(),
+      });
   } catch (e) {
     console.error("[updateRoom]", e);
   }

@@ -1,5 +1,10 @@
 import { createError } from "h3";
-import { EntryRoom, PostRoomRequest, RoomStatus } from "../../models/room";
+import {
+  EntryRoom,
+  PostRoomRequest,
+  PostRoomResponse,
+  RoomStatus,
+} from "../../models/room";
 import { v4 as uuidv4 } from "uuid";
 import { addRoom } from "../../facades/repositories/room";
 
@@ -16,7 +21,7 @@ export default defineEventHandler(async (event) => {
     addRoom(room);
     return {
       roomId: room.roomId,
-    };
+    } as PostRoomResponse;
   } catch (e) {
     console.error("[Entry]", e);
     return createError({

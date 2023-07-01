@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { PostWordChainRequest, WordChain } from "../../models/wordchain";
 import { addWordChain } from "../../facades/repositories/wordChain";
 import { uploadImage } from "../../facades/storage/generatedImage";
+import { editImage } from "../../facades/generativeai/stability";
 import { Buffer } from "buffer";
 
 export default defineEventHandler(async (event) => {
@@ -70,6 +71,7 @@ async function convertAndUploadImage(file: Buffer, wordChain: WordChain) {
   const base64Data = file.toString().split(",")[1];
   const decodedData = Buffer.from(base64Data, "base64");
 
+  const aiEditedImag = await editImage(wordChain.word, decodedData);
   // fs.writeFileSync("temp.png", decodedData); // デバッグ様にローカルに保存
-  await uploadImage(decodedData, wordChain.wordChainId);
+  await uploadImage(aiEditedImag, wordChain.wordChainId);
 }

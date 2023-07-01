@@ -15,6 +15,7 @@ export interface RoomDomain {
   // オプション
   roomName?: string;
   roomStatus?: RoomStatus;
+  lastPhrase?: string;
   createdAt: Date;
   updatedAt?: Date;
 }

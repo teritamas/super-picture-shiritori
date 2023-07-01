@@ -177,7 +177,7 @@ const form = ref({
 
 const emits = defineEmits(["addWordChain"]);
 const addWordChain = async () => {
-  await emits("addWordChain", form, canvas.value.toDataURL("image/png"));
+  await emits("addWordChain", form.value, canvas.value.toDataURL("image/png"));
   clearFormAndCanvas(); // 画像と入力をクリア
 };
 const clearFormAndCanvas = () => {

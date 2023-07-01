@@ -1,4 +1,4 @@
-import { createError } from "h3";
+import { createError, MultiPartData } from "h3";
 import { v4 as uuidv4 } from "uuid";
 import { PostWordChainRequest, WordChain } from "../../models/wordchain";
 import {
@@ -19,6 +19,11 @@ async function checkNextRoomStatus(roomId: string, word: string) {
   const wordChains: WordChain[] | undefined = await getWordChains(roomId);
   if (room === undefined || wordChains === undefined) {
     throw new Error("RoomId is not found");
+  }
+
+  // 部屋の直前の単語の最後の文字と、今回の単語の最初の文字が一致しているか(しりとりが続いているか)を確認
+  if (room.lastPhrase && room.lastPhrase !== word[0]) {
+    return RoomStatus.Failed; // 部屋のステータスを失敗にする
   }
 
   if (room.chainCount > wordChains.length + 1) {
@@ -54,7 +59,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const data: MultiPartData[] | undefined = await readMultipartFormData(
-      event
+      event!
     );
 
     // リクエストボディが取得できなかった場合はエラー
@@ -102,11 +107,15 @@ export default defineEventHandler(async (event) => {
 
     // GCPに保存する処理
     await addWordChain(wordChain);
-    await updateRoomAfterInput(roomId, nextRoomStatus);
+    // 最後の文字を取得
+    console.log(requestBody);
+    const lastPhrase: string = requestBody.word[requestBody.word.length - 1];
+    await updateRoomAfterInput(roomId, lastPhrase, nextRoomStatus);
     await convertAndUploadImage(file, wordChain);
 
     return {
       wordChainId: wordChain.wordChainId,
+      nextRoomStatus: nextRoomStatus,
     };
   } catch (e) {
     console.error("[Entry]", e);

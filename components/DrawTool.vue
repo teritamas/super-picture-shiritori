@@ -88,7 +88,7 @@ export default {
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.lineCap = "round";
     this.context.lineJoin = "round";
-    this.context.lineWidth = 5;
+    this.context.lineWidth = 30;
     this.context.strokeStyle = "#000000";
   },
   methods: {
@@ -240,6 +240,7 @@ export default {
   border: 1px solid #000000;
   background-color: white;
   position: relative;
+  background: white;
 }
 
 .eraser {

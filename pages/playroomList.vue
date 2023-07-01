@@ -4,10 +4,29 @@
   <label for="roomPassPhrase">あいことば</label>
   <input class="" type="text" />
   <div>検索結果</div>
-  <div v-for="item in rooms" :key="item.roomId">
-    <a :href="`/playroom/${item.roomId}`"
-      >{{ item.roomPassPhrase }} - 作成者: {{ item.createUserId }}
-    </a>
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4 p-5">
+    <div v-for="item in rooms" :key="item.roomId">
+      <div>
+        <a
+          :href="`/playroom/${item.roomId}`"
+          class="block max-w-sm p-6 bg-white border border-gray-200 shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+          style="
+            background-image: url('./assets/image/neco.png'); /* 背景画像指定 */
+            background-repeat: no-repeat; /* 背景の繰り返し設定 */
+            background-position: right center; 背景の位置指定
+          "
+        >
+          <h5
+            class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+          >
+            <!--{{ item.roomPassPhrase }}-->
+          </h5>
+          <p class="font-normal text-gray-700 dark:text-gray-400">
+            Created By: {{ item.createUserId }}
+          </p>
+        </a>
+      </div>
+    </div>
   </div>
 
   <h2>プレイルームを作る</h2>

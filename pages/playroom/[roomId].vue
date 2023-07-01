@@ -1,8 +1,9 @@
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <h2>Draw Tool</h2>
-    <PictureList :wordChains="wordChains" />
-    <DrawTool v-show="showDrawingArea" @addWordChain="addWordChain" />
+  <div class="bg">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <PictureList :wordChains="wordChains" />
+      <DrawTool v-show="showDrawingArea" @addWordChain="addWordChain" />
+    </div>
   </div>
 </template>
 
@@ -67,3 +68,13 @@ const addWordChain = async (
   }
 };
 </script>
+
+<style scoped>
+.bg {
+  background-image: url(../assets/image/bglist.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}
+</style>

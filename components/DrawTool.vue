@@ -52,7 +52,7 @@ onMounted(() => {
   context.value.fillRect(0, 0, canvas.value.width, canvas.value.height);
   context.value.lineCap = "round";
   context.value.lineJoin = "round";
-  context.value.lineWidth = 30;
+  context.value.lineWidth = 5;
   context.value.strokeStyle = "#000000";
 });
 const penBlack = () => {

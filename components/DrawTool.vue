@@ -26,7 +26,13 @@
     <div>
       <label for="word">あなたの答え</label>
       <input class="" type="text" v-model="form.word" />
-      <button id="add-word-chain-button" @click="addWordChain">登録</button>
+      <button
+        id="add-word-chain-button"
+        :disabled="disabledSubmitButton"
+        @click="addWordChain"
+      >
+        登録
+      </button>
     </div>
   </div>
 </template>
@@ -174,9 +180,17 @@ import { PostWordChainRequest } from "server/models/wordchain";
 const form = ref({
   word: "",
 } as PostWordChainRequest);
+// ボタンのバリデーション
+const disabledSubmitButton = computed(() => {
+  return form.value.word === "" || canvas.value.toDataURL() === "";
+});
 
 const emits = defineEmits(["addWordChain"]);
 const addWordChain = async () => {
+  if (disabledSubmitButton.value) {
+    console.warn("ボタンが無効です");
+    return;
+  }
   await emits("addWordChain", form.value, canvas.value.toDataURL("image/png"));
   clearFormAndCanvas(); // 画像と入力をクリア
 };

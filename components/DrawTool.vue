@@ -79,7 +79,7 @@ export default {
     this.context = this.canvas.getContext("2d");
     this.context.lineCap = "round";
     this.context.lineJoin = "round";
-    this.context.lineWidth = 5;
+    this.context.lineWidth = 30;
     this.context.strokeStyle = "#000000";
   },
   methods: {
@@ -230,6 +230,7 @@ export default {
 #myCanvas {
   border: 1px solid #000000;
   position: relative;
+  background: white;
 }
 
 .eraser {

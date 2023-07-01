@@ -5,6 +5,7 @@ import { addWordChain } from "../../facades/repositories/wordChain";
 import { uploadImage } from "../../facades/storage/generatedImage";
 import { editImage } from "../../facades/generativeai/stability";
 import { Buffer } from "buffer";
+import { updateRoomUpdatedAt } from "../../facades/repositories/room";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -42,14 +43,17 @@ export default defineEventHandler(async (event) => {
     }
 
     // DBに登録
+    const createdAt: Date = new Date();
     const wordChain: WordChain = {
       ...requestBody,
       roomId: roomId,
       wordChainId: uuidv4(),
+      createdAt: createdAt,
     };
 
     // GCPに保存する処理
     await addWordChain(wordChain);
+    await updateRoomUpdatedAt(roomId);
     await convertAndUploadImage(file, wordChain);
 
     return {

@@ -10,6 +10,7 @@ export default defineEventHandler(async (event) => {
     const room: EntryRoom = {
       ...body,
       roomId: uuidv4(),
+      createdAt: new Date(),
     };
     addRoom(room);
     return {

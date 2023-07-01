@@ -1,10 +1,6 @@
 <template>
   <div>
     <h2>DrowTool</h2>
-    <div v-for="wordChain in wordChains" :key="wordChain.wordChainId">
-      <p>{{ wordChain }}</p>
-      <img :src="getWordChainImage(wordChain.wordChainId)" alt="" />
-    </div>
     <div id="canvas-area">
       <canvas
         id="myCanvas"
@@ -35,34 +31,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-const props = defineProps({
-  roomId: {
-    type: String,
-    required: true,
-  },
-});
-
-// 一覧取得
-const wordChains = ref();
-const getWordChain = async () => {
-  const res = await $fetch(`/api/wordchain/${props.roomId}`, {
-    method: "GET",
-  });
-
-  wordChains.value = res;
-};
-onMounted(async () => {
-  await getWordChain();
-});
-
-// 画像取得
-const runtimeConfig = useRuntimeConfig();
-const getWordChainImage = (wordChainId) => {
-  return `${runtimeConfig.public.baseUrl}/api/wordchain/image/${wordChainId}`;
-};
-</script>
 
 <script>
 export default {

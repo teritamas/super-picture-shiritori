@@ -75,7 +75,10 @@ async function convertAndUploadImage(file: Buffer, wordChain: WordChain) {
   const base64Data = file.toString().split(",")[1];
   const decodedData = Buffer.from(base64Data, "base64");
 
-  const aiEditedImag = await editImage(wordChain.word, decodedData);
+  const image =
+    process.env.MODE === "development"
+      ? decodedData
+      : await editImage(wordChain.word, decodedData);
   // fs.writeFileSync("temp.png", decodedData); // デバッグ様にローカルに保存
-  await uploadImage(aiEditedImag, wordChain.wordChainId);
+  await uploadImage(image, wordChain.wordChainId);
 }

@@ -17,7 +17,7 @@ export interface RoomDomain {
   // オプション
   roomName?: string;
   roomStatus?: RoomStatus;
-  createdAt?: Date;
+  createdAt: Date;
   updatedAt?: Date;
 }
 
@@ -31,4 +31,5 @@ export interface PostRoomRequest {
 // 保存する時に使う
 export interface EntryRoom extends PostRoomRequest {
   roomId: string;
+  createdAt: Date;
 }

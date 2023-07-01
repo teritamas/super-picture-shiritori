@@ -20,9 +20,11 @@ export async function addWordChain(wordChain: WordChain) {
  */
 export async function getWordChains(roomId: string) {
   try {
+    // 日付が早い順に並び替える
     const querySnapshot = await firestore
       .collection("wordChain")
       .where("roomId", "==", roomId)
+      .orderBy("createdAt", "asc")
       .get();
     const wordChains: WordChain[] = [];
     querySnapshot.forEach((doc) => {

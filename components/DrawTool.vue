@@ -9,8 +9,8 @@
       <canvas
         id="myCanvas"
         v-bind:class="{ eraser: canvasMode === 'eraser' }"
-        width="340px"
-        height="340px"
+        width="512px"
+        height="512px"
         @touchstart="touchstart"
         @touchmove="touchDraw"
         @touchend="touchend"
@@ -84,6 +84,8 @@ export default {
   mounted() {
     this.canvas = document.querySelector("#myCanvas");
     this.context = this.canvas.getContext("2d");
+    this.context.fillStyle = "#FFFFFF";
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.lineCap = "round";
     this.context.lineJoin = "round";
     this.context.lineWidth = 5;
@@ -236,6 +238,7 @@ export default {
 <style scoped>
 #myCanvas {
   border: 1px solid #000000;
+  background-color: white;
   position: relative;
 }
 

@@ -1,5 +1,10 @@
 <template>
   <div class="bg">
+    <div>
+      <h1>{{ room.roomPassPhrase }}のしりとり</h1>
+      <h1>目標: {{ room.chainCount }} / のこり {{ remainingChainCount }}回</h1>
+      <h1>始まりの言葉「{{ room.firstWord }}」</h1>
+    </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <PictureList :wordChains="wordChains" />
       <DrawTool v-show="showDrawingArea" @addWordChain="addWordChain" />
@@ -45,6 +50,10 @@ const getWordChain = async () => {
 };
 onMounted(async () => {
   await getWordChain();
+});
+// 残り必要なしりとりの回数
+const remainingChainCount = computed(() => {
+  return room.value.chainCount - wordChains.value.length;
 });
 
 // 登録

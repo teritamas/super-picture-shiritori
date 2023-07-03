@@ -11,6 +11,7 @@ export interface RoomDomain {
   createUserId: string;
   roomPassPhrase: string;
   chainCount: number;
+  firstWord: string;
 
   // オプション
   roomName?: string;
@@ -26,13 +27,14 @@ export interface PostRoomRequest {
   createUserId: string;
   chainCount: number;
 }
-export interface PostRoomResponse {
-  roomId: string;
-}
 
 // 保存する時に使う
 export interface EntryRoom extends PostRoomRequest {
   roomId: string;
   createdAt: Date;
+  firstWord: string;
   roomStatus?: RoomStatus;
+}
+export interface PostRoomResponse {
+  roomId: string;
 }

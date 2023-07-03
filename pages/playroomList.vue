@@ -44,17 +44,16 @@
     <div
       class="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 place-items-center"
     >
-      <div v-for="(item, index) in rooms" :key="item.roomId">
-        <a
-          :href="`/playroom/${item.roomId}`"
-          :class="
-            'block btn-b max-w-sm p-6 bg-white border border-gray-200 shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 btn-' +
-            index
-          "
-        >
-          <p class="font-normal text-gray-700 dark:text-gray-400">
-            {{ item.createUserId }}’s room
-          </p>
+      <div v-for="item in rooms" :key="item.roomId">
+        <a :href="`/playroom/${item.roomId}`">
+          <div class="ribbon16-wrapper btn-b">
+            <span v-if="item.roomStatus == 'playing'" class="ribbon16"
+              >NOW</span
+            >
+            <div>
+              <p>{{ item.createUserId }}’s room</p>
+            </div>
+          </div>
         </a>
       </div>
     </div>
@@ -178,7 +177,52 @@ const addRoom = async () => {
   display: block;
   width: 300px;
   margin: 5px auto;
-
+}
+.ribbon16-wrapper {
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  padding: 10px 0;
+  width: 300px;
   background: beige;
+  box-sizing: border-box;
+}
+
+.ribbon16 {
+  display: inline-block;
+  position: absolute;
+  top: -6px;
+  right: 10px;
+  margin: 0;
+  padding: 10px 0 7px;
+  z-index: 2;
+  width: 40px;
+  text-align: center;
+  color: white;
+  font-size: 13px;
+  background: #fa8383;
+  border-radius: 2px 0 0 0;
+}
+
+.ribbon16:before {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: -5px;
+  border: none;
+  border-bottom: solid 6px #d07676;
+  border-right: solid 5px transparent;
+}
+
+.ribbon16:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 100%;
+  height: 0;
+  width: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 10px solid #fa8383;
 }
 </style>

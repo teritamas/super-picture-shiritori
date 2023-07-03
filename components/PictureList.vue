@@ -8,7 +8,7 @@
       <div
         class="absolute w-3 h-3 bg-gray-800 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"
       ></div>
-      <p>{{ index }}回目の絵</p>
+      <p>{{ index + 1 }}回目の絵</p>
       <img
         :src="getWordChainImage(wordChain.wordChainId)"
         :alt="wordChain.roomId + index"

@@ -10,6 +10,10 @@ import { editImage } from "../../facades/generativeai/stability";
 import { Buffer } from "buffer";
 import { getRoom, updateRoomAfterInput } from "../../facades/repositories/room";
 import { RoomDomain, RoomStatus } from "../../models/room";
+import {
+  checkShiritori,
+  translateEnglish,
+} from "../../facades/generativeai/chatgpt";
 
 /**
  * ユーザのしりとりの入力に応じて次の部屋のステータスを検証する
@@ -22,7 +26,8 @@ async function checkNextRoomStatus(roomId: string, word: string) {
   }
 
   // 部屋の直前の単語の最後の文字と、今回の単語の最初の文字が一致しているか(しりとりが続いているか)を確認
-  if (room.lastPhrase && room.lastPhrase !== word[0]) {
+  // if (room.lastPhrase && room.lastPhrase !== word[0]) {
+  if (room.lastPhrase && !(await checkShiritori(room.lastPhrase!, word))) {
     return RoomStatus.Failed; // 部屋のステータスを失敗にする
   }
 
@@ -37,16 +42,20 @@ async function checkNextRoomStatus(roomId: string, word: string) {
 /**
  * file画像を変換してstorageにアップロードする
  */
-async function convertAndUploadImage(file: Buffer, wordChain: WordChain) {
+async function convertAndUploadImage(
+  file: Buffer,
+  wordChainId: string,
+  wordEnglish: string
+) {
   const base64Data = file.toString().split(",")[1];
   const decodedData = Buffer.from(base64Data, "base64");
 
   const image =
     process.env.MODE === "development"
       ? decodedData
-      : await editImage(wordChain.word, decodedData);
+      : await editImage(wordEnglish, decodedData);
   // fs.writeFileSync("temp.png", decodedData); // デバッグ様にローカルに保存
-  await uploadImage(image, wordChain.wordChainId);
+  await uploadImage(image, wordChainId);
 }
 
 export default defineEventHandler(async (event) => {
@@ -108,10 +117,12 @@ export default defineEventHandler(async (event) => {
     // GCPに保存する処理
     await addWordChain(wordChain);
     // 最後の文字を取得
-    console.log(requestBody);
     const lastPhrase: string = requestBody.word[requestBody.word.length - 1];
     await updateRoomAfterInput(roomId, lastPhrase, nextRoomStatus);
-    await convertAndUploadImage(file, wordChain);
+
+    // 翻訳の動作確認
+    const translatedWord: string = await translateEnglish(requestBody.word);
+    await convertAndUploadImage(file, wordChain.wordChainId, translatedWord);
 
     return {
       wordChainId: wordChain.wordChainId,

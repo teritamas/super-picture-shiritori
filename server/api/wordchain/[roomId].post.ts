@@ -5,7 +5,7 @@ import {
   addWordChain,
   getWordChains,
 } from "../../facades/repositories/wordChain";
-import { uploadImage } from "../../facades/storage/generatedImage";
+import { uploadGenerateImage } from "../../facades/storage/generatedImage";
 import { editImage } from "../../facades/generativeai/stability";
 import { Buffer } from "buffer";
 import { getRoom, updateRoomAfterInput } from "../../facades/repositories/room";
@@ -14,6 +14,7 @@ import {
   checkShiritori,
   translateEnglish,
 } from "../../facades/generativeai/chatgpt";
+import { uploadOriginalImage } from "../../facades/storage/originalImage";
 
 /**
  * ユーザのしりとりの入力に応じて次の部屋のステータスを検証する
@@ -48,14 +49,15 @@ async function convertAndUploadImage(
   wordEnglish: string
 ) {
   const base64Data = file.toString().split(",")[1];
-  const decodedData = Buffer.from(base64Data, "base64");
+  const originalImage = Buffer.from(base64Data, "base64");
 
-  const image =
+  const generateImage =
     process.env.MODE === "development"
-      ? decodedData
-      : await editImage(wordEnglish, decodedData);
+      ? originalImage
+      : await editImage(wordEnglish, originalImage);
   // fs.writeFileSync("temp.png", decodedData); // デバッグ様にローカルに保存
-  await uploadImage(image, wordChainId);
+  await uploadGenerateImage(generateImage, wordChainId);
+  await uploadOriginalImage(originalImage, wordChainId);
 }
 
 export default defineEventHandler(async (event) => {
@@ -91,6 +93,7 @@ export default defineEventHandler(async (event) => {
         file = d.data;
       }
     }
+    // 各パラメータが取得できなかったらエラー
     const roomId: string | undefined = event.context.params?.roomId;
     if (!(requestBody && file && roomId)) {
       return createError({
@@ -99,28 +102,25 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // DBに登録
-    const createdAt: Date = new Date();
-    const wordChain: WordChain = {
-      ...requestBody,
-      roomId: roomId,
-      wordChainId: uuidv4(),
-      createdAt: createdAt,
-    };
-
-    // TODO: 直前の単語と続いていることを確認する
+    // 直前の単語と続いていることを確認する
     const nextRoomStatus: RoomStatus = await checkNextRoomStatus(
       roomId,
       requestBody.word
     );
 
-    // GCPに保存する処理
+    // しりとりを保存する
+    const wordChain: WordChain = {
+      ...requestBody,
+      roomId: roomId,
+      wordChainId: uuidv4(),
+      createdAt: new Date(),
+    };
     await addWordChain(wordChain);
-    // 最後の文字を取得
+
+    // 入力の最後の文字を取得しルームを更新
     const lastPhrase: string = requestBody.word[requestBody.word.length - 1];
     await updateRoomAfterInput(roomId, lastPhrase, nextRoomStatus);
 
-    // 翻訳の動作確認
     const translatedWord: string = await translateEnglish(requestBody.word);
     await convertAndUploadImage(file, wordChain.wordChainId, translatedWord);
 

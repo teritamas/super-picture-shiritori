@@ -1,12 +1,12 @@
 import { bucket } from "../firebase";
 
-const GENERATED_IMAGE_DIR = "generatedImage";
+const ORIGINAL_IMAGE_DIR = "originalImage";
 
 /**
  * storageに画像をアップロードする
  */
-export const uploadGenerateImage = async (image: Buffer, filename: string) => {
-  const file = bucket.file(GENERATED_IMAGE_DIR + "/" + filename + ".png");
+export const uploadOriginalImage = async (image: Buffer, filename: string) => {
+  const file = bucket.file(ORIGINAL_IMAGE_DIR + "/" + filename + ".png");
   try {
     console.log("[uploadImage]", image);
     await file.save(image);
@@ -19,8 +19,8 @@ export const uploadGenerateImage = async (image: Buffer, filename: string) => {
 /**
  * storageから画像をダウンロードする
  */
-export const downloadGenerateImage = async (wordChainId: string) => {
-  const file = bucket.file(GENERATED_IMAGE_DIR + "/" + wordChainId + ".png");
+export const downloadOriginalImage = async (wordChainId: string) => {
+  const file = bucket.file(ORIGINAL_IMAGE_DIR + "/" + wordChainId + ".png");
   try {
     const [data] = await file.download();
     return data;

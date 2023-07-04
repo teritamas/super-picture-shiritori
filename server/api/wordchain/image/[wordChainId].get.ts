@@ -1,11 +1,13 @@
-import { downloadImage } from "../../../facades/storage/generatedImage";
+import { downloadGenerateImage } from "../../../facades/storage/generatedImage";
+import { downloadOriginalImage } from "../../../facades/storage/originalImage";
 
 /**
- * 一覧取得
+ * 画像取得
  */
 export default defineEventHandler(async (event) => {
   try {
     const wordChainId: string | undefined = event.context.params?.wordChainId;
+    const { type } = getQuery(event);
     if (wordChainId === undefined) {
       return createError({
         statusCode: 400,
@@ -13,7 +15,10 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    const image = await downloadImage(wordChainId);
+    const image =
+      type === "generated"
+        ? await downloadGenerateImage(wordChainId)
+        : await downloadOriginalImage(wordChainId);
     return image === undefined ? [] : image;
   } catch (e) {
     console.error("[Get]", e);

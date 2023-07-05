@@ -4,8 +4,8 @@
       <canvas
         id="myCanvas"
         v-bind:class="{ eraser: canvasMode === 'eraser' }"
-        width="512px"
-        height="512px"
+        :width="512"
+        :height="512"
         @touchstart="touchstart"
         @touchmove="touchDraw"
         @touchend="touchend"

@@ -1,4 +1,7 @@
 <template>
+  <loading v-show="isLoading" />
+  <success-pop v-show="isSuccess" @hiddenPop="hiddenPop" />
+  <failure-pop v-show="isFailure" @hiddenPop="hiddenPop" />
   <div class="bg">
     <div>
       <h1>{{ room.roomPassPhrase }}のしりとり</h1>
@@ -18,7 +21,14 @@ import { PostWordChainRequest, WordChain } from "../../server/models/wordchain";
 
 const route = useRoute();
 const roomId = route.params.roomId as string;
+const isLoading = ref(false);
+const isSuccess = ref(false);
+const isFailure = ref(false);
 
+const hiddenPop = () => {
+  isSuccess.value = false;
+  isFailure.value = false;
+};
 // しりとり部屋のステータス取得
 const room = ref({} as RoomDomain);
 const getRoom = async () => {
@@ -61,6 +71,7 @@ const addWordChain = async (
   postWordChainRequest: PostWordChainRequest,
   fileDataURL: any
 ) => {
+  isLoading.value = true;
   const formData = new FormData();
   formData.append("request", JSON.stringify(postWordChainRequest));
   formData.append("file", fileDataURL);
@@ -70,10 +81,25 @@ const addWordChain = async (
       method: "POST",
       body: formData,
     }
-  );
+  )
+    .then((res) => {
+      getWordChain();
+      getRoom();
+      return res;
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+
   if (data) {
-    getWordChain();
-    getRoom();
+    if (data.value && data.value!.nextRoomStatus === RoomStatus.Playing) {
+      isSuccess.value = true;
+    } else {
+      isFailure.value = true;
+    }
+    setInterval((_) => {
+      isSuccess.value = false;
+    }, 5000);
   }
 };
 </script>

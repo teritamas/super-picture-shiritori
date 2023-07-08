@@ -57,17 +57,6 @@
         </a>
       </div>
     </div>
-
-    <h2>プレイルームを作る</h2>
-    <label for="roomPassPhrase">目標設定</label>
-    <input class="" type="text" v-model="form.chainCount" />回
-    <label for="chainCount">あいことば</label>
-    <input class="" type="text" v-model="form.roomPassPhrase" />
-    <label for="createUserId">ユーザ名</label>
-    <input class="" type="text" v-model="form.createUserId" />
-    <div>
-      <button id="back-button" @click="addRoom">送信</button>
-    </div>
   </div>
   <div class="bg"></div>
 </template>

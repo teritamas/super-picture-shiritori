@@ -181,6 +181,7 @@ const makeNft = async (
   background-size: cover;
   background-position: center;
   height: 100vh;
+  overflow: scroll;
 }
 .hukidashi-right {
   position: relative;

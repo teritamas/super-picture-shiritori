@@ -31,6 +31,17 @@
             }}</span
           >
         </label>
+        <button
+          class="col-span-2 block btn-c relative z-10 inline-flex items-center justify-center overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+          v-if="roomStatus && roomStatus === RoomStatus.Completed"
+          @click="mintNft(wordChain)"
+        >
+          <span
+            class="relative px-5 py-2.5 transition-all ease-in duration-75 dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+          >
+            NFTを発行する
+          </span>
+        </button>
       </p>
       <img
         :src="
@@ -46,11 +57,16 @@
 </template>
 
 <script setup lang="ts">
+import { RoomStatus } from "../server/models/room";
 import { WordChain } from "server/models/wordchain";
 
 const props = defineProps({
   wordChains: {
     type: Array as PropType<WordChain[]>,
+    required: true,
+  },
+  roomStatus: {
+    type: String as PropType<RoomStatus | undefined>,
     required: true,
   },
 });
@@ -62,10 +78,20 @@ onMounted(() => {
 });
 const runtimeConfig = useRuntimeConfig();
 const getWordChainGeneratedImage = (wordChainId: string) => {
-  return `${runtimeConfig.public.baseUrl}/api/wordchain/image/${wordChainId}?type=generated`;
+  return `${runtimeConfig.public.baseUrl}api/wordchain/image/${wordChainId}?type=generated`;
 };
 const getWordChainOriginalImage = (wordChainId: string) => {
-  return `${runtimeConfig.public.baseUrl}/api/wordchain/image/${wordChainId}?type=original`;
+  return `${runtimeConfig.public.baseUrl}api/wordchain/image/${wordChainId}?type=original`;
+};
+
+// NFTの作成
+const emits = defineEmits(["mintNft"]);
+const mintNft = async (wordChain: WordChain) => {
+  await emits(
+    "mintNft",
+    wordChain,
+    getWordChainGeneratedImage(wordChain.wordChainId)
+  );
 };
 </script>
 

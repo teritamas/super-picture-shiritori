@@ -21,29 +21,23 @@
         :remainingChainRate="remainingChainRate"
         :length="wordChains.length"
       />
-      <button
-        class="col-span-2 block btn-c relative z-10 inline-flex items-center justify-center overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
-        v-if="room.roomStatus == 'completed'"
-        @click="makeNft"
-      >
-        <span
-          class="relative px-5 py-2.5 transition-all ease-in duration-75 dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
-        >
-          NFTを発行する
-        </span>
-      </button>
     </div>
 
     <chain-result-image :roomStatus="room.roomStatus" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <PictureList :wordChains="wordChains" />
+      <PictureList
+        :wordChains="wordChains"
+        :roomStatus="room.roomStatus"
+        @mintNft="mintNft"
+      />
       <DrawTool v-show="showDrawingArea" @addWordChain="addWordChain" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { mint } from "../../services/contracts/pictureShiritoriCompleteNFT";
 import { RoomDomain, RoomStatus } from "../../server/models/room";
 import { PostWordChainRequest, WordChain } from "../../server/models/wordchain";
 
@@ -143,25 +137,16 @@ const addWordChain = async (
   }
 };
 
-// 登録
-const makeNft = async (
-  postWordChainRequest: PostWordChainRequest,
-  fileDataURL: any
-) => {
+// NFTの作成
+const mintNft = async (wordChain: WordChain, imageUrl: string) => {
   isLoading.value = true;
 
-  //  ここから変更
-  const formData = new FormData();
-  formData.append("request", JSON.stringify(postWordChainRequest));
-  formData.append("file", fileDataURL);
-  const { data, pending, error, refresh } = await useFetch(
-    `/api/wordchain/${roomId}`,
-    {
-      method: "POST",
-      body: formData,
-    }
-  )
-    //  ここまで変更
+  const roomPassPhrase = room.value.roomPassPhrase;
+  const res = await mint(
+    roomPassPhrase,
+    imageUrl,
+    `${roomPassPhrase} のしりとりの成功報酬です！\n\n書いたものは「${wordChain.word}」です\nとてもお上手です！`
+  ) //  ここまで変更
     .then((res) => {
       getWordChain();
       getRoom();

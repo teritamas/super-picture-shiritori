@@ -6,6 +6,8 @@ export default defineNuxtConfig({
     public: {
       baseUrl: process.env.BASE_URL || "http://localhost:3000",
       walletConnectProjectId: process.env.WALLET_CONNECT_PROJECT_ID || "",
+      pictureShiritoriCompleteNFTContractAddress:
+        process.env.PICTURE_SHIRITORI_COMPLETE_NFT_CONTRACT_ADDRESS || "",
     },
   },
 });

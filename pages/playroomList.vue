@@ -163,6 +163,7 @@ const addRoom = async () => {
   background-size: cover;
   background-position: center;
   height: 100vh;
+  overflow: scroll;
 }
 
 .btn-b {

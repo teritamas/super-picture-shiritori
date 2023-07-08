@@ -10,4 +10,7 @@ export default defineNuxtConfig({
         process.env.PICTURE_SHIRITORI_COMPLETE_NFT_CONTRACT_ADDRESS || "",
     },
   },
+  routeRules: {
+    "/api/**": { cors: false },
+  },
 });

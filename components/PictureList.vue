@@ -8,8 +8,8 @@
       <div
         class="absolute w-3 h-3 bg-gray-800 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"
       ></div>
-      <p>
-        {{ index + 1 }}回目の絵
+      <span class="picture">{{ index + 1 }}回目の絵</span>
+      <div class="inline-block">
         <label class="relative inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
@@ -31,7 +31,7 @@
             }}</span
           >
         </label>
-      </p>
+      </div>
       <img
         :src="
           viewOriginalImageToggles[index]
@@ -76,12 +76,48 @@ ol {
 
 .scroll {
   overflow-x: scroll;
-  height: 100vh;
+  height: 380px;
 }
 
 .article {
   background-color: #fff;
   border: solid 2px #000;
   box-shadow: 0 6px 6px -6px #000;
+}
+
+.picture {
+  position: relative;
+  display: inline-block;
+  padding: 7px 10px;
+  font-size: 10px;
+  background: #fff;
+  border: solid 3px #555;
+  box-sizing: border-box;
+  width: 100px;
+  z-index: 10;
+  font-weight: bold;
+  text-align: center;
+}
+
+.picture:before {
+  content: "";
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  margin-left: -15px;
+  border: 12px solid transparent;
+  border-top: 13px solid #fff;
+  z-index: 2;
+}
+
+.picture:after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  margin-left: -17px;
+  border: 14px solid transparent;
+  border-top: 14px solid #555;
+  z-index: 1;
 }
 </style>

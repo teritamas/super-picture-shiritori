@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <form style="width: 400px; margin: 5rem auto 1rem">
+    <form style="width: 300px; margin: 3rem auto 1rem">
       <label
         for="default-search"
         class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -42,7 +42,8 @@
       </div>
     </form>
     <div
-      class="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 place-items-center"
+      class="mx-10 p-15 grid grid-cols-1 md:grid-cols-2 gap-2 place-items-center"
+      style="max-width: 400px; margin: 0 auto"
     >
       <div v-for="item in rooms" :key="item.roomId">
         <a :href="`/playroom/${item.roomId}`">
@@ -144,10 +145,11 @@ const addRoom = async () => {
   position: absolute;
   height: 100vh;
   width: 100vw;
+  overflow: scroll;
 }
 
 .bg {
-  background-image: url(../assets/image/bglist.jpg);
+  background-image: url(../assets/image/bg.jpg);
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
@@ -161,11 +163,11 @@ const addRoom = async () => {
   border-bottom-width: 8px;
   border-radius: 10px;
   color: #212121;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: bold;
   text-align: center;
   display: block;
-  width: 300px;
+  width: 200px;
   margin: 5px auto;
 }
 .ribbon16-wrapper {
@@ -173,7 +175,7 @@ const addRoom = async () => {
   position: relative;
   margin: 0 auto;
   padding: 10px 0;
-  width: 300px;
+  width: 200px;
   background: beige;
   box-sizing: border-box;
 }
@@ -189,7 +191,7 @@ const addRoom = async () => {
   width: 40px;
   text-align: center;
   color: white;
-  font-size: 13px;
+  font-size: 8px;
   background: #fa8383;
   border-radius: 2px 0 0 0;
 }

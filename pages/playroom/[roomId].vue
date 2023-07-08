@@ -5,9 +5,10 @@
   <success-make-nft-pop v-show="isSuccessNft" @hiddenPop="hiddenPop" />
 
   <div class="bg">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1" style="max-width: 400px; margin: 3rem auto">
       <button class="btn-b" @click="pageReload">
-        <div>
+        <div class="relative">
+          <chain-result-image :roomStatus="room.roomStatus" />
           <h1 class="text-3xl">{{ room.roomPassPhrase }}’s room</h1>
           <div class="hukidashi-right">
             <p>始まりの言葉</p>
@@ -22,7 +23,7 @@
         :length="wordChains.length"
       />
       <button
-        class="col-span-2 block btn-c relative z-10 inline-flex items-center justify-center overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+        class="block btn-c relative z-10 inline-flex items-center justify-center overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
         v-if="room.roomStatus == 'completed'"
         @click="makeNft"
       >
@@ -32,11 +33,7 @@
           NFTを発行する
         </span>
       </button>
-    </div>
 
-    <chain-result-image :roomStatus="room.roomStatus" />
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <PictureList :wordChains="wordChains" />
       <DrawTool v-show="showDrawingArea" @addWordChain="addWordChain" />
     </div>
@@ -176,7 +173,7 @@ const makeNft = async (
 
 <style scoped>
 .bg {
-  background-image: url(../assets/image/bglist.jpg);
+  background-image: url(../assets/image/bg.jpg);
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
@@ -188,7 +185,7 @@ const makeNft = async (
   display: inline-block;
   margin: 1em 15px 0 0;
   padding: 7px 10px;
-  min-width: 150px;
+  min-width: 109px;
   max-width: 100%;
   font-size: 14px;
   background: #fff;
@@ -204,7 +201,7 @@ const makeNft = async (
   right: -24px;
   margin-top: -12px;
   border: 12px solid transparent;
-  border-left: 12px solid #fff;
+  border-left: 13px solid #fff;
   z-index: 2;
 }
 
@@ -254,6 +251,6 @@ const makeNft = async (
   background-repeat: repeat;
   display: block;
   width: 300px;
-  margin: 5px auto;
+  margin: 5px auto 50px;
 }
 </style>

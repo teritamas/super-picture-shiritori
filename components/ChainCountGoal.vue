@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-5 md:mr-10 md:mt-5 mb-5">
-    <span class="name">目標 {{ chainCount }} 回</span>
+  <div class="mx-5 md:mr-10 mb-2">
+    <span class="goal">目標 {{ chainCount }} 回</span>
     <div class="bar-graph-wrap">
       <div class="graph yellow" :style="'width:' + remainingChainRate + '%'">
         <span class=""></span>
@@ -31,36 +31,38 @@ export default {
 .number {
   color: black;
   z-index: 5;
-  font-size: 22px;
+  font-size: 12px;
   display: inline-block;
   white-space: nowrap;
 }
 
-.name {
+.goal {
   position: relative;
   display: block;
   padding: 7px 10px;
-  font-size: 16px;
+  font-size: 10px;
   background: #fff;
   border: solid 3px #555;
   box-sizing: border-box;
   margin: 0 0 0 auto;
   width: 100px;
   z-index: 10;
+  font-weight: bold;
+  text-align: center;
 }
 
-.name:before {
+.goal:before {
   content: "";
   position: absolute;
   bottom: -24px;
   left: 50%;
   margin-left: -15px;
   border: 12px solid transparent;
-  border-top: 12px solid #fff;
+  border-top: 13px solid #fff;
   z-index: 2;
 }
 
-.name:after {
+.goal:after {
   content: "";
   position: absolute;
   bottom: -30px;
@@ -71,16 +73,11 @@ export default {
   z-index: 1;
 }
 
-.name p {
-  margin: 0;
-  padding: 0;
-}
-
 .bar-graph-wrap {
   position: relative;
   overflow: hidden;
   border: #555 solid 2px;
-  height: 50px;
+  height: 30px;
   background: white;
 }
 
@@ -93,7 +90,7 @@ export default {
     #ffe9a7 0,
     #ffe9a7 50%
   );
-  height: 50px;
+  height: 30px;
   position: absolute;
   left: 0;
   border-radius: 0 4px 4px 0;
@@ -111,7 +108,7 @@ export default {
   animation: graphAnim 2.5s forwards;
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 730px) {
   .bar-graph-wrap .graph span {
     font-size: 12px;
   }

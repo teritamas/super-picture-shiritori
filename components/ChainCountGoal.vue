@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-5 mb-5">
+  <div class="mx-5 md:mr-10 md:mt-5 mb-5">
     <span class="name">目標 {{ chainCount }} 回</span>
     <div class="bar-graph-wrap">
       <div class="graph yellow" :style="'width:' + remainingChainRate + '%'">
@@ -25,100 +25,9 @@ export default {
 };
 </script>
 <style>
-.contents {
-  display: block;
-  color: #fff;
-  background: white;
-  padding: 0.5em 1.5em;
-  position: relative;
-  text-shadow: -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000,
-    1px 1px 1px #000;
-  z-index: 0;
-  border: 2px solid #000;
-  height: 45px;
-}
-.yellow:before {
-  background: repeating-linear-gradient(
-    135deg,
-    #fec72e,
-    #fec72e 5px,
-    #fff8a4 0,
-    #fff8a4 10px
-  );
-  content: "";
-  position: absolute;
-  top: 1px;
-  bottom: 0;
-  left: 1px;
-  right: 1px;
-  z-index: 2;
-  height: 43px;
-  margin: 0 1.25rem;
-}
-.yellow:after {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 248, 164, 1),
-    rgba(255, 248, 164, 0.1)
-  );
-  content: "";
-  position: absolute;
-  top: 1px;
-  bottom: 0;
-  left: 1px;
-  right: 1px;
-  z-index: 2;
-  height: 43px;
-  margin: 0 1.25rem;
-}
-
 /*------------------------------------
   bar graph
 ------------------------------------*/
-
-.bar-graph-wrap .graph {
-  height: 50px;
-  position: absolute;
-  left: 0;
-  border-radius: 0 4px 4px 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding: 10px;
-  -webkit-animation: graphAnim 2.5s forwards;
-  animation: graphAnim 2.5s forwards;
-}
-.bar-graph-wrap .graph {
-  z-index: 1;
-}
-@-webkit-keyframes graphAnim {
-  0% {
-    -webkit-transform: translateX(-100%);
-    transform: translateX(-100%);
-  }
-  100% {
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-  }
-}
-
-@keyframes graphAnim {
-  0% {
-    -webkit-transform: translateX(-100%);
-    transform: translateX(-100%);
-  }
-  100% {
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-  }
-}
-
 .number {
   color: black;
   z-index: 5;
@@ -165,5 +74,68 @@ export default {
 .name p {
   margin: 0;
   padding: 0;
+}
+
+.bar-graph-wrap {
+  position: relative;
+  overflow: hidden;
+  border: #555 solid 2px;
+  height: 50px;
+  background: white;
+}
+
+.bar-graph-wrap .graph {
+  background-size: 20px 20px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #fec72e 0,
+    #fec72e 2px,
+    #ffe9a7 0,
+    #ffe9a7 50%
+  );
+  height: 50px;
+  position: absolute;
+  left: 0;
+  border-radius: 0 4px 4px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 10px;
+  -webkit-animation: graphAnim 2.5s forwards;
+  animation: graphAnim 2.5s forwards;
+}
+
+@media screen and (max-width: 750px) {
+  .bar-graph-wrap .graph span {
+    font-size: 12px;
+  }
+}
+
+@-webkit-keyframes graphAnim {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+@keyframes graphAnim {
+  0% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
 }
 </style>

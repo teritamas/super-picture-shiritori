@@ -2,9 +2,11 @@
   <loading v-show="isLoading" />
   <success-pop v-show="isSuccess" @hiddenPop="hiddenPop" />
   <failure-pop v-show="isFailure" @hiddenPop="hiddenPop" />
+  <success-make-nft-pop v-show="isSuccessNft" @hiddenPop="hiddenPop" />
+
   <div class="bg">
-    <div>
-      <div class="btn-b">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <button class="btn-b" @click="pageReload">
         <div>
           <h1 class="text-3xl">{{ room.roomPassPhrase }}’s room</h1>
           <div class="hukidashi-right">
@@ -12,15 +14,27 @@
           </div>
           「{{ room.firstWord }}」
         </div>
-      </div>
+      </button>
+
+      <chain-count-goal
+        :chainCount="room.chainCount"
+        :remainingChainRate="remainingChainRate"
+        :length="wordChains.length"
+      />
+      <button
+        class="col-span-2 block btn-c relative z-10 inline-flex items-center justify-center overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+        v-if="room.roomStatus == 'completed'"
+        @click="makeNft"
+      >
+        <span
+          class="relative px-5 py-2.5 transition-all ease-in duration-75 dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+        >
+          NFTを発行する
+        </span>
+      </button>
     </div>
 
     <chain-result-image :roomStatus="room.roomStatus" />
-    <chain-count-goal
-      :chainCount="room.chainCount"
-      :remainingChainRate="remainingChainRate"
-      :length="wordChains.length"
-    />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <PictureList :wordChains="wordChains" />
@@ -38,11 +52,18 @@ const roomId = route.params.roomId as string;
 const isLoading = ref(false);
 const isSuccess = ref(false);
 const isFailure = ref(false);
+const isSuccessNft = ref(false);
 
 const hiddenPop = () => {
   isSuccess.value = false;
   isFailure.value = false;
+  isSuccessNft.value = false;
 };
+
+const pageReload = () => {
+  location.reload();
+};
+
 // しりとり部屋のステータス取得
 const room = ref({} as RoomDomain);
 const getRoom = async () => {
@@ -121,6 +142,36 @@ const addWordChain = async (
     }, 5000);
   }
 };
+
+// 登録
+const makeNft = async (
+  postWordChainRequest: PostWordChainRequest,
+  fileDataURL: any
+) => {
+  isLoading.value = true;
+
+  //  ここから変更
+  const formData = new FormData();
+  formData.append("request", JSON.stringify(postWordChainRequest));
+  formData.append("file", fileDataURL);
+  const { data, pending, error, refresh } = await useFetch(
+    `/api/wordchain/${roomId}`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  )
+    //  ここまで変更
+    .then((res) => {
+      getWordChain();
+      getRoom();
+      return res;
+    })
+    .finally(() => {
+      isLoading.value = false;
+      isSuccessNft.value = true;
+    });
+};
 </script>
 
 <style scoped>
@@ -184,5 +235,24 @@ const addWordChain = async (
   width: 350px;
   margin: 5px auto;
   background: beige;
+}
+
+.btn-c {
+  padding: 1rem 1rem;
+  border: 3px solid #212121;
+  border-bottom-width: 8px;
+  border-radius: 10px;
+  color: #212121;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  background-image: linear-gradient(45deg, #07fffb 25%, transparent 25%),
+    linear-gradient(315deg, #07fffb 25%, #a7fbff 25%);
+  background-position: 10px 0, 20px 0, 0 0, 0 0;
+  background-size: 20px 20px;
+  background-repeat: repeat;
+  display: block;
+  width: 300px;
+  margin: 5px auto;
 }
 </style>

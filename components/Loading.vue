@@ -8,7 +8,7 @@
           <div></div>
           <div></div>
           <div></div>
-          <p class="font-bold text-white">お絵描き中</p>
+          <p class="font-bold text-white">Loading...</p>
           <p
             v-for="data in loadingText"
             :key="data.index"

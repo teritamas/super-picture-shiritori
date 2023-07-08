@@ -1,8 +1,7 @@
 <template>
-  <NuxtPage />
-  <!--<bg-plane />-->
-  <!--<div class="frame"></div>-->
-  <!--<AppFooter />-->
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <style>

@@ -26,10 +26,12 @@ export default {
   methods: {},
 };
 </script>
-<style>
+<style scoped>
 .result-img {
   position: absolute;
-  top: 77px;
+  top: -20px;
+  right: -10px;
   z-index: 12;
+  width: 80px;
 }
 </style>

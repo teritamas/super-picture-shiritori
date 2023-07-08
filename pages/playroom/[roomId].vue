@@ -5,9 +5,10 @@
   <success-make-nft-pop v-show="isSuccessNft" @hiddenPop="hiddenPop" />
 
   <div class="bg">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1" style="max-width: 400px; margin: 3rem auto">
       <button class="btn-b" @click="pageReload">
-        <div>
+        <div class="relative">
+          <chain-result-image :roomStatus="room.roomStatus" />
           <h1 class="text-3xl">{{ room.roomPassPhrase }}’s room</h1>
           <div class="hukidashi-right">
             <p>始まりの言葉</p>
@@ -15,23 +16,19 @@
           「{{ room.firstWord }}」
         </div>
       </button>
-
       <chain-count-goal
         :chainCount="room.chainCount"
         :remainingChainRate="remainingChainRate"
         :length="wordChains.length"
       />
-    </div>
-
-    <chain-result-image :roomStatus="room.roomStatus" />
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <PictureList
-        :wordChains="wordChains"
-        :roomStatus="room.roomStatus"
-        @mintNft="mintNft"
-      />
-      <DrawTool v-show="showDrawingArea" @addWordChain="addWordChain" />
+      <div class="grid grid-cols-1 gap-4">
+        <PictureList
+          :wordChains="wordChains"
+          :roomStatus="room.roomStatus"
+          @mintNft="mintNft"
+        />
+        <DrawTool v-show="showDrawingArea" @addWordChain="addWordChain" />
+      </div>
     </div>
   </div>
 </template>
@@ -161,7 +158,7 @@ const mintNft = async (wordChain: WordChain, imageUrl: string) => {
 
 <style scoped>
 .bg {
-  background-image: url(../assets/image/bglist.jpg);
+  background-image: url(../assets/image/bg.jpg);
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
@@ -173,7 +170,7 @@ const mintNft = async (wordChain: WordChain, imageUrl: string) => {
   display: inline-block;
   margin: 1em 15px 0 0;
   padding: 7px 10px;
-  min-width: 150px;
+  min-width: 109px;
   max-width: 100%;
   font-size: 14px;
   background: #fff;
@@ -189,7 +186,7 @@ const mintNft = async (wordChain: WordChain, imageUrl: string) => {
   right: -24px;
   margin-top: -12px;
   border: 12px solid transparent;
-  border-left: 12px solid #fff;
+  border-left: 13px solid #fff;
   z-index: 2;
 }
 
@@ -239,6 +236,6 @@ const mintNft = async (wordChain: WordChain, imageUrl: string) => {
   background-repeat: repeat;
   display: block;
   width: 300px;
-  margin: 5px auto;
+  margin: 5px auto 50px;
 }
 </style>

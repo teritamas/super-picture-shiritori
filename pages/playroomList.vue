@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <form style="width: 400px; margin: 5rem auto 1rem">
+    <form style="width: 300px; margin: 3rem auto 1rem">
       <label
         for="default-search"
         class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -32,17 +32,19 @@
           class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="あいことば"
           required
+          style="border: 3px solid #000"
         />
         <button
           type="submit"
           class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
-          Search
+          検索
         </button>
       </div>
     </form>
     <div
-      class="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 place-items-center"
+      class="mx-10 p-15 grid grid-cols-1 md:grid-cols-2 gap-2 place-items-center"
+      style="max-width: 400px; margin: 0 auto"
     >
       <div v-for="item in rooms" :key="item.roomId">
         <a :href="`/playroom/${item.roomId}`">
@@ -144,10 +146,12 @@ const addRoom = async () => {
   position: absolute;
   height: 100vh;
   width: 100vw;
+  overflow: scroll;
+  padding-bottom: 3rem;
 }
 
 .bg {
-  background-image: url(../assets/image/bglist.jpg);
+  background-image: url(../assets/image/bg.jpg);
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
@@ -161,11 +165,11 @@ const addRoom = async () => {
   border-bottom-width: 8px;
   border-radius: 10px;
   color: #212121;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: bold;
   text-align: center;
   display: block;
-  width: 300px;
+  width: 200px;
   margin: 5px auto;
 }
 .ribbon16-wrapper {
@@ -173,7 +177,7 @@ const addRoom = async () => {
   position: relative;
   margin: 0 auto;
   padding: 10px 0;
-  width: 300px;
+  width: 200px;
   background: beige;
   box-sizing: border-box;
 }
@@ -189,7 +193,7 @@ const addRoom = async () => {
   width: 40px;
   text-align: center;
   color: white;
-  font-size: 13px;
+  font-size: 8px;
   background: #fa8383;
   border-radius: 2px 0 0 0;
 }

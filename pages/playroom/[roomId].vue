@@ -9,13 +9,14 @@
       <h1>始まりの言葉「{{ room.firstWord }}」</h1>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <PictureList :wordChains="wordChains" />
+      <PictureList :wordChains="wordChains" @mintNft="mintNft" />
       <DrawTool v-show="showDrawingArea" @addWordChain="addWordChain" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { mint } from "../../services/contracts/pictureShiritoriCompleteNFT";
 import { RoomDomain, RoomStatus } from "../../server/models/room";
 import { PostWordChainRequest, WordChain } from "../../server/models/wordchain";
 
@@ -101,6 +102,10 @@ const addWordChain = async (
       isSuccess.value = false;
     }, 5000);
   }
+};
+
+const mintNft = async (passPhrase: string, imageUrl: string) => {
+  const res = await mint(passPhrase, imageUrl, "test");
 };
 </script>
 

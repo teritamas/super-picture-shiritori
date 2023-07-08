@@ -31,6 +31,7 @@
             }}</span
           >
         </label>
+        <button @click="mintNft(wordChain.wordChainId)">NFT発行</button>
       </p>
       <img
         :src="
@@ -62,10 +63,15 @@ onMounted(() => {
 });
 const runtimeConfig = useRuntimeConfig();
 const getWordChainGeneratedImage = (wordChainId: string) => {
-  return `${runtimeConfig.public.baseUrl}/api/wordchain/image/${wordChainId}?type=generated`;
+  return `${runtimeConfig.public.baseUrl}api/wordchain/image/${wordChainId}?type=generated`;
 };
 const getWordChainOriginalImage = (wordChainId: string) => {
-  return `${runtimeConfig.public.baseUrl}/api/wordchain/image/${wordChainId}?type=original`;
+  return `${runtimeConfig.public.baseUrl}api/wordchain/image/${wordChainId}?type=original`;
+};
+
+const emits = defineEmits(["mintNft"]);
+const mintNft = async (wordChainId: string) => {
+  await emits("mintNft", wordChainId, getWordChainGeneratedImage(wordChainId));
 };
 </script>
 

@@ -10,6 +10,7 @@
           class="d-input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           type="text"
           placeholder="10"
+          style="border: 2px solid #000"
           v-model="form.chainCount"
         />
         <small class="block"
@@ -21,7 +22,8 @@
           <label for="chainCount">あいことば</label>
         </div>
         <input
-          class="d-input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          class="d-input bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          style="border: 2px solid #000"
           type="text"
           v-model="form.roomPassPhrase"
           placeholder="あいことば"
@@ -34,6 +36,7 @@
         <input
           class="d-input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           type="text"
+          style="border: 2px solid #000"
           v-model="form.createUserId"
           placeholder="ニックネーム"
         />
@@ -158,7 +161,7 @@ const addRoom = async () => {
   right: -24px;
   margin-top: -12px;
   border: 12px solid transparent;
-  border-left: 12px solid #fff;
+  border-left: 13px solid #fff;
   z-index: 2;
 }
 

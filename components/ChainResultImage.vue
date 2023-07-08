@@ -26,7 +26,7 @@ export default {
   methods: {},
 };
 </script>
-<style>
+<style scoped>
 .result-img {
   position: absolute;
   top: -20px;

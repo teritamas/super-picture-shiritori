@@ -104,8 +104,14 @@ const addWordChain = async (
   }
 };
 
-const mintNft = async (passPhrase: string, imageUrl: string) => {
-  const res = await mint(passPhrase, imageUrl, "test");
+// NFTの作成
+const mintNft = async (wordChain: WordChain, imageUrl: string) => {
+  const roomPassPhrase = room.value.roomPassPhrase;
+  const res = await mint(
+    roomPassPhrase,
+    imageUrl,
+    `${roomPassPhrase} のしりとりの成功報酬です！\n\n書いたものは「${wordChain.word}」です\nとてもお上手です！`
+  );
 };
 </script>
 

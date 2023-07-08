@@ -31,7 +31,7 @@
             }}</span
           >
         </label>
-        <button @click="mintNft(wordChain.wordChainId)">NFT発行</button>
+        <button @click="mintNft(wordChain)">NFT発行</button>
       </p>
       <img
         :src="
@@ -69,9 +69,14 @@ const getWordChainOriginalImage = (wordChainId: string) => {
   return `${runtimeConfig.public.baseUrl}api/wordchain/image/${wordChainId}?type=original`;
 };
 
+// NFTの作成
 const emits = defineEmits(["mintNft"]);
-const mintNft = async (wordChainId: string) => {
-  await emits("mintNft", wordChainId, getWordChainGeneratedImage(wordChainId));
+const mintNft = async (wordChain: WordChain) => {
+  await emits(
+    "mintNft",
+    wordChain,
+    getWordChainGeneratedImage(wordChain.wordChainId)
+  );
 };
 </script>
 

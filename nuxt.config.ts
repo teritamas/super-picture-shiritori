@@ -11,6 +11,9 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
-    "/api/**": { cors: true },
+    "/api/**": {
+      cors: true,
+      headers: { "access-control-allow-methods": "GET,HEAD" },
+    },
   },
 });

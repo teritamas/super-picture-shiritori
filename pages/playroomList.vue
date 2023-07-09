@@ -59,6 +59,10 @@
         </a>
       </div>
     </div>
+    <SecondaryButton
+      :buttonText="'→ルームを作成して遊ぶ'"
+      :to="'/makePlayroom'"
+    />
   </div>
   <div class="bg"></div>
 </template>

@@ -23,7 +23,7 @@ export async function editImage(prompt: string, image: Buffer) {
   const formData = new FormData();
   formData.append("init_image", image);
   formData.append("init_image_mode", "IMAGE_STRENGTH");
-  formData.append("image_strength", 0.4);
+  formData.append("image_strength", 0.15);
   formData.append(
     "text_prompts[0][text]",
     `(((best quality))), ((masterpiece)), ((${prompt})). paints a continuation`

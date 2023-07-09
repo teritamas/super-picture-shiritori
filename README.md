@@ -1,4 +1,4 @@
-# Super Picture Shiritori
+# 超絵しりとり！
 
 超絵しりとり！のソースコードです。
 

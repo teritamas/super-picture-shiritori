@@ -27,6 +27,7 @@ async function checkNextRoomStatus(roomId: string, word: string) {
   }
 
   // 部屋の直前の単語の最後の文字と、今回の単語の最初の文字が一致しているか(しりとりが続いているか)を確認
+  console.log(room.lastPhrase, word[0]);
   if (room.lastPhrase && room.lastPhrase !== word[0]) {
     // if (room.lastPhrase && !(await checkShiritori(room.lastPhrase!, word))) {
     return RoomStatus.Failed; // 部屋のステータスを失敗にする

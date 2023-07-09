@@ -1,4 +1,14 @@
-# OASYS TOKYO HACKJAM
+# Super Picture Shiritori
+
+超絵しりとり！のソースコードです。
+
+## 全体像
+
+超絵しりとり！の全体像は下記の図の通りです。
+
+![アーキテクチャ](./docs/arch.png)
+
+---
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 

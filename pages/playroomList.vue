@@ -59,6 +59,10 @@
         </a>
       </div>
     </div>
+    <SecondaryButton
+      :buttonText="'→ルームを作成して遊ぶ'"
+      :to="'/makePlayroom'"
+    />
   </div>
   <div class="bg"></div>
 </template>
@@ -218,5 +222,24 @@ const addRoom = async () => {
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
   border-top: 10px solid #fa8383;
+}
+
+.btn-c {
+  padding: 1rem 1rem;
+  border: 3px solid #212121;
+  border-bottom-width: 8px;
+  border-radius: 10px;
+  color: #212121;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  background-image: linear-gradient(45deg, #07fffb 25%, transparent 25%),
+    linear-gradient(315deg, #07fffb 25%, #a7fbff 25%);
+  background-position: 10px 0, 20px 0, 0 0, 0 0;
+  background-size: 20px 20px;
+  background-repeat: repeat;
+  display: block;
+  width: 300px;
+  margin: 5px auto;
 }
 </style>

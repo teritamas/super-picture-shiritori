@@ -47,6 +47,7 @@
         </button>
       </div>
     </div>
+    <PrimaryButton :buttonText="'→ルームを探して遊ぶ'" :to="'/playroomList'" />
   </div>
   <div class="bg"></div>
 </template>

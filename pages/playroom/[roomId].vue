@@ -9,7 +9,7 @@
       <button class="btn-b" @click="pageReload">
         <div class="relative">
           <chain-result-image :roomStatus="room.roomStatus" />
-          <h1 class="text-3xl">{{ room.roomPassPhrase }}’s room</h1>
+          <h1 class="text-3xl">{{ room.createUserId }}’s room</h1>
           <div class="hukidashi-right">
             <p>始まりの言葉</p>
           </div>
@@ -123,10 +123,10 @@ const addWordChain = async (
     });
 
   if (data) {
-    if (data.value && data.value!.nextRoomStatus === RoomStatus.Playing) {
-      isSuccess.value = true;
-    } else {
+    if (data.value && data.value!.nextRoomStatus === RoomStatus.Failed) {
       isFailure.value = true;
+    } else {
+      isSuccess.value = true;
     }
     setInterval((_) => {
       isSuccess.value = false;

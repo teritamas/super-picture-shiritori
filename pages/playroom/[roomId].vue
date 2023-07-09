@@ -158,7 +158,7 @@ const mintNft = async (wordChain: WordChain, imageUrl: string) => {
 
 <style scoped>
 .bg {
-  background-image: url(../assets/image/bg.jpg);
+  background-image: url(../../assets/image/bg.webp);
   background-attachment: fixed;
   background-size: cover;
   background-position: center;

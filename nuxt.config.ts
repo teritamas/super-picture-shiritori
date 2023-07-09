@@ -13,7 +13,12 @@ export default defineNuxtConfig({
   routeRules: {
     "/api/**": {
       cors: true,
-      headers: { "access-control-allow-methods": "GET,HEAD" },
+      headers: {
+        "access-control-allow-credentials": "true",
+        "access-control-allow-origin": "*",
+        "access-control-allow-methods": "*",
+        "access-control-allow-headers": "*",
+      },
     },
   },
 });

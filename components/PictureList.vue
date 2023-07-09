@@ -1,48 +1,40 @@
 <template>
-  <ol class="relative scroll">
+  <div class="relative">
     <li
       v-for="(wordChain, index) in wordChains"
       :key="wordChain.wordChainId"
       class="mb-10 ml-4"
+      style="list-style: none"
     >
-      <div
-        class="absolute w-3 h-3 bg-gray-800 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"
-      ></div>
-
-      <span class="picture">{{ index + 1 }}回目の絵</span>
-      <div class="inline-block">
-        <label class="relative inline-flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            :value="viewOriginalImageToggles[index]"
-            @click="
-              viewOriginalImageToggles[index] = !viewOriginalImageToggles[index]
-            "
-            class="sr-only peer"
-          />
-          <div
-            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
-          ></div>
-          <span
-            class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
-            >{{
-              viewOriginalImageToggles[index]
-                ? "生成された画像を表示"
-                : "元の画像を表示"
-            }}</span
-          >
-        </label>
-        <button
-          class="block btn-c relative z-10 inline-flex items-center justify-center overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
-          v-if="roomStatus && roomStatus === RoomStatus.Completed"
-          @click="mintNft(wordChain)"
-        >
-          <span
-            class="relative px-5 py-2.5 transition-all ease-in duration-75 dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
-          >
-            NFTを発行する
-          </span>
-        </button>
+      <div class="flex flex-row">
+        <div class="basis-1/4">
+          <span class="picture">{{ index + 1 }}回目の絵</span>
+        </div>
+        <div class="basis-1/4"></div>
+        <div class="basis-1/2">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              :value="viewOriginalImageToggles[index]"
+              @click="
+                viewOriginalImageToggles[index] =
+                  !viewOriginalImageToggles[index]
+              "
+              class="sr-only peer"
+            />
+            <div
+              class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+            ></div>
+            <span
+              class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >{{
+                viewOriginalImageToggles[index]
+                  ? "生成画像を表示"
+                  : "元の画像を表示"
+              }}</span
+            >
+          </label>
+        </div>
       </div>
       <img
         :src="
@@ -53,8 +45,21 @@
         :alt="wordChain.roomId + index"
         class="w-full relative article"
       />
+      <div class="flex justify-end">
+        <button
+          class="block z-10 inline-flex items-center justify-center overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+          v-if="roomStatus && roomStatus === RoomStatus.Completed"
+          @click="mintNft(wordChain)"
+        >
+          <span
+            class="px-5 py-2.5 transition-all ease-in duration-75 dark:bg-gray-900 rounded-md group-hover:bg-opacity-0"
+          >
+            NFTを発行する
+          </span>
+        </button>
+      </div>
     </li>
-  </ol>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -146,5 +151,24 @@ ol {
   border: 14px solid transparent;
   border-top: 14px solid #555;
   z-index: 1;
+}
+
+.btn-c {
+  padding: 1rem 1rem;
+  border: 3px solid #212121;
+  border-bottom-width: 8px;
+  border-radius: 10px;
+  color: #212121;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  background-image: linear-gradient(45deg, #07fffb 25%, transparent 25%),
+    linear-gradient(315deg, #07fffb 25%, #a7fbff 25%);
+  background-position: 10px 0, 20px 0, 0 0, 0 0;
+  background-size: 20px 20px;
+  background-repeat: repeat;
+  display: block;
+  width: 300px;
+  margin: 5px auto 50px;
 }
 </style>

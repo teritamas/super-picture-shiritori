@@ -219,23 +219,4 @@ const mintNft = async (wordChain: WordChain, imageUrl: string) => {
   margin: 5px auto;
   background: beige;
 }
-
-.btn-c {
-  padding: 1rem 1rem;
-  border: 3px solid #212121;
-  border-bottom-width: 8px;
-  border-radius: 10px;
-  color: #212121;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  background-image: linear-gradient(45deg, #07fffb 25%, transparent 25%),
-    linear-gradient(315deg, #07fffb 25%, #a7fbff 25%);
-  background-position: 10px 0, 20px 0, 0 0, 0 0;
-  background-size: 20px 20px;
-  background-repeat: repeat;
-  display: block;
-  width: 300px;
-  margin: 5px auto 50px;
-}
 </style>

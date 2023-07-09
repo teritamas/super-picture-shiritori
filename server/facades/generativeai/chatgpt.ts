@@ -11,7 +11,7 @@ const openai = new OpenAIApi(configuration);
 export async function translateEnglish(text: string) {
   const translation = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
-    temperature: 0,
+    temperature: 0.9,
     messages: [
       {
         role: "user",
@@ -19,7 +19,10 @@ export async function translateEnglish(text: string) {
       },
     ],
   });
-  return translation.data.choices[0].message?.content ?? "";
+
+  const translateEnglish = translation.data.choices[0].message?.content ?? "";
+  console.log("翻訳結果", translateEnglish);
+  return translateEnglish;
 }
 
 /**
@@ -28,8 +31,8 @@ export async function translateEnglish(text: string) {
 export async function checkShiritori(beforeWord: string, afterWord: string) {
   console.log(beforeWord, afterWord);
   const responseMessage = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    temperature: 0,
+    model: "gpt-4",
+    temperature: 0.9,
     messages: [
       {
         role: "user",
@@ -41,7 +44,6 @@ export async function checkShiritori(beforeWord: string, afterWord: string) {
       },
     ],
   });
-  console.log(responseMessage.data.choices[0].message?.content);
   return responseMessage.data.choices[0].message?.content === "true"
     ? true
     : false;

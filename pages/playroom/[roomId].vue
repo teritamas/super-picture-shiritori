@@ -5,7 +5,7 @@
   <success-make-nft-pop v-show="isSuccessNft" @hiddenPop="hiddenPop" />
 
   <div class="bg">
-    <div class="grid grid-cols-1" style="max-width: 400px; margin: 3rem auto">
+    <div class="grid grid-cols-1" style="max-width: 384px; margin: 3rem auto">
       <button class="btn-b" @click="pageReload">
         <div class="relative">
           <chain-result-image :roomStatus="room.roomStatus" />

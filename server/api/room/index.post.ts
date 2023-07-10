@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
       createdAt: new Date(),
       roomStatus: RoomStatus.Playing,
       firstWord: firstWord,
+      lastPhrase: firstWord[firstWord.length - 1],
     };
     addRoom(room);
     return {

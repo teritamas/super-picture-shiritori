@@ -15,8 +15,8 @@ export interface RoomDomain {
 
   // オプション
   roomName?: string;
-  roomStatus?: RoomStatus;
-  lastPhrase?: string;
+  roomStatus: RoomStatus;
+  lastPhrase: string;
   createdAt: Date;
   updatedAt?: Date;
 }
@@ -33,7 +33,8 @@ export interface EntryRoom extends PostRoomRequest {
   roomId: string;
   createdAt: Date;
   firstWord: string;
-  roomStatus?: RoomStatus;
+  roomStatus: RoomStatus;
+  lastPhrase: string;
 }
 export interface PostRoomResponse {
   roomId: string;

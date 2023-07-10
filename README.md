@@ -8,6 +8,17 @@
 
 ![アーキテクチャ](./docs/arch.png)
 
+## 環境
+
+本アプリケーションは、下記の環境で動作確認をしています。
+
+- Node.js v16.x.x
+- npm v8.x.x
+
+> **`Warning`**  
+> 本アプリケーションは、Node.js v16.x.x での動作確認しています。
+> Node.js v18.x.x では、stability.ai の API リクエスト時に、原因不明のエラーが発生しました。
+
 ---
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.

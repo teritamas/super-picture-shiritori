@@ -23,17 +23,18 @@ export async function editImage(prompt: string, image: Buffer) {
   const formData = new FormData();
   formData.append("init_image", image);
   formData.append("init_image_mode", "IMAGE_STRENGTH");
-  formData.append("image_strength", 0.1);
+  formData.append("image_strength", 0.15);
   formData.append(
     "text_prompts[0][text]",
-    `(((simple)))), (((best quality))), ((masterpiece)), ((${prompt})). paints a continuation. no text.`
+    `an comic style of ${prompt}, natural, best quality, masterpiece.`
   );
-  formData.append("cfg_scale", 20);
-  formData.append("clip_guidance_preset", "FAST_BLUE");
+  formData.append("text_prompts[0][weight]", 0.8);
+  formData.append("cfg_scale", 30);
+  // formData.append("clip_guidance_preset", "FAST_BLUE");
   formData.append("style_preset", "enhance");
   formData.append("samples", 1);
   formData.append("seed", 1);
-  formData.append("steps", 100);
+  formData.append("steps", 70);
 
   const response = await fetch(
     `${apiHost}/v1/generation/${engineId}/image-to-image`,

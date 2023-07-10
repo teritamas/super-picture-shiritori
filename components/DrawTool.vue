@@ -116,14 +116,21 @@
       />
       <small class="block bg-white w-80 round-lg m-auto"
         >あなたが書いた絵をひらがなで入力してください<br />
-        例）あいす</small
+        例）あいす, おーえすえす</small
       >
+      <div
+        v-if="!isHiragana"
+        class="bg-yellow-100 border border-yellow-500 text-yellow-700 p-4 rounded"
+        role="alert"
+      >
+        <p>入力はひらがなのみ対応しています。</p>
+      </div>
     </div>
     <div class="text-center">
       <button
         :disabled="disabledSubmitButton"
         @click="addWordChain"
-        class="btn-c mt-5"
+        class="btn-c mt-5 disabled:opacity-75 bg-white"
         id="back-button"
       >
         登録
@@ -200,13 +207,6 @@ const dragEnd = () => {
 const clear = () => {
   context.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
 };
-// 画像ダウンロード
-const download = () => {
-  const link = document.createElement("a");
-  link.href = canvas.value.toDataURL("image/png");
-  link.download = "canvas-" + new Date().getTime() + ".png";
-  link.click();
-};
 // タッチイベント
 const touchstart = (e: any) => {
   noScroll(e);
@@ -259,7 +259,18 @@ const form = ref({
 } as PostWordChainRequest);
 // ボタンのバリデーション
 const disabledSubmitButton = computed(() => {
-  return form.value.word === "" || canvas.value.toDataURL() === "";
+  return (
+    form.value.word === "" ||
+    canvas.value.toDataURL() === "" ||
+    !isHiragana.value
+  );
+});
+// ひらがな以外が入力されたらfalse
+const isHiragana = computed(() => {
+  return (
+    form.value.word === "" || // 空白の時
+    (form.value.word !== "" && form.value.word.match(/^[ぁ-んー]*$/) !== null) // 空白ではなくかつひらがなの時
+  );
 });
 
 const emits = defineEmits(["addWordChain"]);

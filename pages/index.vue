@@ -12,6 +12,7 @@
           :buttonText="'ルームを作成して遊ぶ'"
           :to="'/makePlayroom'"
         />
+        <NFTGallery />
       </div>
     </div>
   </div>
@@ -59,7 +60,7 @@
   background-size: cover;
   background-position: center;
   height: 90vh;
-  display: flex;
+  padding-top: 200px;
   justify-content: center;
   align-items: center;
   overflow: scroll;

@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseUrl: process.env.BASE_URL || "http://localhost:3000",
+      blockExplorerUrl: process.env.BLOCK_EXPLORER_URL || "",
       walletConnectProjectId: process.env.WALLET_CONNECT_PROJECT_ID || "",
       pictureShiritoriCompleteNFTContractAddress:
         process.env.PICTURE_SHIRITORI_COMPLETE_NFT_CONTRACT_ADDRESS || "",

@@ -1,5 +1,7 @@
 import { ThirdwebSDK } from "@thirdweb-dev/sdk/evm";
+import { MetaMaskWallet } from "@thirdweb-dev/wallets";
 import { Chain } from "@thirdweb-dev/chains";
+import { NFT } from "@thirdweb-dev/sdk";
 const OASYS_TESTNET_THIRD_WEB = {
   name: "Testnet Hub Layer",
   chain: "Oasys",
@@ -16,20 +18,21 @@ const OASYS_TESTNET_THIRD_WEB = {
   testnet: true,
 } as Chain;
 
-let contract: any;
-import { MetaMaskWallet } from "@thirdweb-dev/wallets";
-
-export async function getContractFromWalletConnect() {
+/**
+ * WalletConnectからコントラクトを取得する
+ * コントラクトに対してTransactionを送信するために必要
+ */
+async function getContractFromWalletConnect() {
   const wallet = new MetaMaskWallet({});
   const sdk = await ThirdwebSDK.fromWallet(wallet, OASYS_TESTNET_THIRD_WEB);
   const runtimeConfig = useRuntimeConfig();
-  const pictureShiritoriCompleteNFTContractAddress =
-    runtimeConfig.public.pictureShiritoriCompleteNFTContractAddress;
-  contract = await sdk.getContract(pictureShiritoriCompleteNFTContractAddress);
+  return await sdk.getContract(
+    runtimeConfig.public.pictureShiritoriCompleteNFTContractAddress
+  );
 }
 
 /**
- * NFTを発行するs
+ * NFTを発行する
  * @param passPhrase しりとりルームの合言葉
  * @param image
  * @param description しりとりルームの説明
@@ -40,7 +43,7 @@ export async function mint(
   imageUrl: string,
   description: string = ""
 ): Promise<any> {
-  await getContractFromWalletConnect();
+  const contract = await getContractFromWalletConnect();
   const tx = await contract.erc721.lazyMint([
     {
       name: passPhrase,
@@ -51,6 +54,25 @@ export async function mint(
   const tokenData = await tx[0].data(); // (optional) fetch details of the first created NFT
 
   console.log("tokenId", tokenData, tx);
-
+  const tx_2 = await contract.erc721.claim(1);
   return tokenData;
+}
+
+async function getContract() {
+  const sdk = new ThirdwebSDK(OASYS_TESTNET_THIRD_WEB);
+
+  const runtimeConfig = useRuntimeConfig();
+  return await sdk.getContract(
+    runtimeConfig.public.pictureShiritoriCompleteNFTContractAddress
+  );
+}
+
+/**
+ * ウォレットに紐づくNFTを取得する
+ */
+export async function getMyNFTs(walletAddress: string): Promise<NFT[]> {
+  const contract = await getContract();
+  const nfts = await contract.erc721.getOwned(walletAddress);
+  // 新しいものから先にする
+  return nfts.reverse();
 }

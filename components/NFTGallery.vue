@@ -5,8 +5,9 @@
     style="max-width: 400px; margin: 0 auto"
   >
     <div class="col-span-2 pt-10">
-      <h1 class="text-center">あなたのNFTアート</h1>
-      <a :href="blockExplorerUrl()">ブロックエクスプローラーで確認</a>
+      <a class="text-sky-500" :href="blockExplorerUrl()"
+        >ブロックエクスプローラーで確認</a
+      >
     </div>
 
     <div class="">

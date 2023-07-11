@@ -1,18 +1,8 @@
 <template>
   <div class="bg">
     <div class="main">
-      <h1 class="title">超絵しりとり</h1>
-      <h2 class="sub-title hidden md:block">Super Picture Shiritori</h2>
-      <div class="text-center md:mt-8">
-        <PrimaryButton
-          :buttonText="'ルームを探して遊ぶ'"
-          :to="'/playroomList'"
-        />
-        <SecondaryButton
-          :buttonText="'ルームを作成して遊ぶ'"
-          :to="'/makePlayroom'"
-        />
-      </div>
+      <h1 class="title">NFTギャラリー</h1>
+      <NFTGallery />
     </div>
   </div>
 </template>

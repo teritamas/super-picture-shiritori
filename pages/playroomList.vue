@@ -101,19 +101,6 @@ const form = reactive({
   createUserId: "",
   chainCount: 10,
 });
-const addRoom = async () => {
-  const res = await useFetch("/api/room", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...form }),
-  });
-  const response = res.data.value as PostRoomResponse;
-  if (response.roomId) {
-    await getRooms();
-    // プレイルーム画面に遷移
-    navigateTo(`/playroom/${response.roomId}`);
-  }
-};
 </script>
 
 <style scoped>

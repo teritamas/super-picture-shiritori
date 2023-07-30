@@ -4,12 +4,12 @@
 
 - [超絵しりとり！](https://oasys-tokyo-hackjam.vercel.app/?vercelToolbarCode=YHS2cuSjMs_GqNy)
 
+> **Note**
+> デモ環境のサーバを無料版にダウングレードしました。安定しない場合があります。
+
 本アプリケーションの操作方法や概要については下記の URL を参照してください
 
 - [超絵しりとり！ | AKINDO](https://app.akindo.io/communities/Be7rL1wo7UEqv60G/products/Nm1V8pmL6s1ROng4)
-
-> **Note**
-> デモ用の Web サイトのため、上記のエンドポイントは予告なく終了する可能性があります。
 
 ## 全体構成
 

@@ -5,7 +5,7 @@
     >
       <a href="/" class="flex items-center">
         <span
-          class="title self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+          class="header-title self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
           >超絵しりとり</span
         >
       </a>
@@ -103,7 +103,7 @@ onMounted(() => {
   --w3m-accent-color: #333 !important;
 }
 
-.title {
+.header-title {
   font-size: 1.5rem;
   text-align: center;
   color: lavenderblush;

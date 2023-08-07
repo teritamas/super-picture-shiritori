@@ -12,6 +12,11 @@
           :buttonText="'ルームを作成して遊ぶ'"
           :to="'/makePlayroom'"
         />
+        <!-- 2段落改行 -->
+        <br />
+        <br />
+        <SecondaryButton :buttonText="'一人で遊ぶ'" :to="'/singleUserMode'">
+        </SecondaryButton>
       </div>
     </div>
   </div>

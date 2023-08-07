@@ -43,7 +43,7 @@ const getRooms = async () => {
       headers: { "Content-Type": "application/json" },
     });
 
-    const responseData = res as RoomDomain[];
+    const responseData = res as unknown as RoomDomain[];
     rooms.value = responseData.map((room) => {
       const roomDomain = { ...room } as RoomDomain;
       return roomDomain;
